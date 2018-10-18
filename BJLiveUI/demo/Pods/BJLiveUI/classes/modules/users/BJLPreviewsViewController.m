@@ -1052,8 +1052,13 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         return;
     }
     
+//    UIAlertController *alert = [UIAlertController
+//                                alertControllerWithTitle:playingUser.name
+//                                message:nil
+//                                preferredStyle:UIAlertControllerStyleActionSheet];
+//    2018-10-16 17:38:41 mikasa 仿安卓去掉alert title的名字
     UIAlertController *alert = [UIAlertController
-                                alertControllerWithTitle:playingUser.name
+                                alertControllerWithTitle:nil
                                 message:nil
                                 preferredStyle:UIAlertControllerStyleActionSheet];
     

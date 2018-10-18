@@ -201,8 +201,9 @@ NS_ASSUME_NONNULL_BEGIN
                      && !self.room.roomVM.liveStarted) {
                      [self.room.roomVM sendLiveStarted:YES]; // 进入教室上课
                  }
-                 
-                 [self.room.recordingVM setVideoBeautifyLevel:BJLVideoBeautifyLevel_off];
+//                 2018-10-17 10:39:11 mikasa 需求设计 默认美颜开启
+//                 [self.room.recordingVM setVideoBeautifyLevel:BJLVideoBeautifyLevel_off];
+                 [self.room.recordingVM setVideoBeautifyLevel:BJLVideoBeautifyLevel_on];
                  
                  [self roomViewControllerEnterRoomSuccess:self];
                  

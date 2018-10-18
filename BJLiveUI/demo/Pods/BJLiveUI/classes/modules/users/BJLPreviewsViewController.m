@@ -975,10 +975,16 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         return;
     }
     
+//    UIAlertController *alert = [UIAlertController
+//                                alertControllerWithTitle:@"采集视频"
+//                                message:nil
+//                                preferredStyle:UIAlertControllerStyleActionSheet];
+//    2018-10-16 18:16:36 mikasa 根据需求设计 删除alert的title
     UIAlertController *alert = [UIAlertController
-                                alertControllerWithTitle:@"采集视频"
+                                alertControllerWithTitle:nil
                                 message:nil
                                 preferredStyle:UIAlertControllerStyleActionSheet];
+
     
     if (self.fullScreenItem.type != BJLPreviewsType_recording) {
         [alert bjl_addActionWithTitle:@"全屏"

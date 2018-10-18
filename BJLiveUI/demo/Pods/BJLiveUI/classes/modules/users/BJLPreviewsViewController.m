@@ -98,6 +98,8 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 @property (nonatomic, readonly) NSMutableSet *autoPlayVideoBlacklist;
 @property (nonatomic, readonly) NSMutableArray<BJLMediaUser *> *videoUsers, *audioUsers;
 @property (nonatomic, readwrite) NSMutableDictionary *videoLoadingList;
+@property (nonatomic, readwrite) UIView *headerView;
+@property (nonatomic, readwrite) UILabel *movL;
 
 @end
 
@@ -173,6 +175,9 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         collectionView.alwaysBounceVertical = NO;
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
+//        2018-10-17 11:27:58 mikasa collectionview 禁止滑动 需求设计如此
+        [collectionView setScrollEnabled:NO];
+        //        2018-10-17 11:27:58 mikasa collectionview 禁止滑动 需求设计如此
         collectionView.clipsToBounds = NO;
         collectionView.dataSource = self;
         collectionView.delegate = self;
@@ -183,6 +188,30 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         [self.view addSubview:collectionView];
         collectionView;
     });
+// 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
+    self.headerView =({
+        UIView *headView = [UIView new];
+        headView.backgroundColor = [UIColor whiteColor];
+//        //2018-10-17 15:00:26 mikasa 调试 暂时屏蔽
+//        [headView setHidden:YES];
+//        //2018-10-17 15:00:26 mikasa 调试 暂时屏蔽
+        [self.collectionView addSubview:headView];
+        headView;
+    });
+// 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
+    
+// 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
+    self.movL = ({
+        UILabel *movL = [UILabel new];
+        [movL setText:@"视频"];
+        
+        [movL setTextColor:[UIColor bjl_colorWithHex:0x222222]];
+        [movL setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16.]];
+        [movL setTextAlignment:NSTextAlignmentLeft];
+        [self.headerView addSubview:movL];
+        movL;
+    });
+// 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
     
     self.backgroundView = ({
         UIView *backgroundView = [UIView new];
@@ -229,6 +258,21 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         make.top.equalTo(self.view.mas_bottom).with.offset(BJLViewSpaceM);
         make.size.mas_equalTo(moreButtonSize);
     }];
+//    2018-10-17 14:36:28 mikasa 添加假头视图 @“视频”
+    [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 40.));
+    }];
+//    2018-10-17 14:36:28 mikasa 添加假头视图 @“视频”
+    
+    // 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
+    [self.movL mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.headerView).with.inset(15.);
+        make.centerY.equalTo(self.headerView);
+        make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width -15., 22.5));
+    }];
+    // 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
 }
 
 - (void)makeObserving {

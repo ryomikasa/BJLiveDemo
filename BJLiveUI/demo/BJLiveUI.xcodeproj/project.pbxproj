@@ -337,7 +337,7 @@
 				TargetAttributes = {
 					DF97FD051E2CCBEB00A1BF8F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = GDGLX4B964;
+						DevelopmentTeam = X42MB444YX;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -677,10 +677,10 @@
 			baseConfigurationReference = 47AB3619F4CC369C2C2323A3 /* Pods-BJLiveUI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = GDGLX4B964;
+				DEVELOPMENT_TEAM = X42MB444YX;
 				INFOPLIST_FILE = BJLiveUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bjhl.BJLiveUI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.h252371921.BJLiveUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -690,10 +690,10 @@
 			baseConfigurationReference = 65673B29693F77EEE8699FCD /* Pods-BJLiveUI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = GDGLX4B964;
+				DEVELOPMENT_TEAM = X42MB444YX;
 				INFOPLIST_FILE = BJLiveUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bjhl.BJLiveUI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.h252371921.BJLiveUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

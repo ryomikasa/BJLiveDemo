@@ -1,0 +1,1 @@
+../../../BJLiveUI/classes/room/BJLRoomViewController+protected.h

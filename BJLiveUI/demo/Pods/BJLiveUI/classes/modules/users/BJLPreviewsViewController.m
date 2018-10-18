@@ -688,7 +688,8 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 
 // !!!: `collectionView:cellForItemAtIndexPath:` will not be called if height is 0
 - (void)makeContentSize:(MASConstraintMaker *)make forHorizontal:(BOOL)isHorizontal {
-    CGSize size = [BJLPreviewCell cellSize];
+//    CGSize size = [BJLPreviewCell cellSize];
+    CGSize size = [BJLPreviewCell previewctrlSelfviewSsize];
     // size.width = self.numberOfItems > 0 ? size.width *= self.numberOfItems : 0.0;
     size.height = self.numberOfItems > 0 ? size.height : 0.0;
     // make.width.equalTo(@(size.width)).priorityHigh();

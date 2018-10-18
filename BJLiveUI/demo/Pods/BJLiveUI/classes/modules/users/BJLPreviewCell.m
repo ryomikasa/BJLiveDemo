@@ -333,6 +333,13 @@ NSString
     return CGSizeMake(height * 4 / 3, height);
 }
 
+//2018-10-17 15:44:12  mikasa 修改视频区域大小
+
++ (CGSize)previewctrlSelfviewSsize {
+    CGFloat height = heightM+40.;
+    return CGSizeMake([UIScreen mainScreen].bounds.size.width , height);
+}
+//2018-10-17 15:44:12  mikasa 修改视频区域大小
 + (NSArray<NSString *> *)allCellIdentifiers {
     return @[BJLPreviewCellID_view,
              BJLPreviewCellID_view_label,

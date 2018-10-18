@@ -28,6 +28,9 @@ FOUNDATION_EXPORT NSString
 
 + (CGSize)cellSize;
 + (NSArray<NSString *> *)allCellIdentifiers;
+//2018-10-17 15:45:37 mikasa 视频区域ctrl.view  大小挑中
++ (CGSize)previewctrlSelfviewSsize;
+//2018-10-17 15:45:37 mikasa 视频区域ctrl.view  大小挑中
 
 @end
 

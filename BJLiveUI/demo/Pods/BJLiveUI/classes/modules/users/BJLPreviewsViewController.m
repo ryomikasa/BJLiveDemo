@@ -987,13 +987,23 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 
     
     if (self.fullScreenItem.type != BJLPreviewsType_recording) {
-        [alert bjl_addActionWithTitle:@"全屏"
+//        2018-10-17 10:29:50 mikasa 根据需求设计 禁用全屏功能 仿照安卓全屏设置为下麦
+//        [alert bjl_addActionWithTitle:@"全屏"
+//                                style:UIAlertActionStyleDefault
+//                              handler:^(UIAlertAction * _Nonnull action) {
+//                                  if (!self.room.recordingVM.recordingVideo) {
+//                                      return;
+//                                  }
+//                                  [self enterFullScreenWithRecordingView];
+//                              }];
+        [alert bjl_addActionWithTitle:@"下麦"
                                 style:UIAlertActionStyleDefault
                               handler:^(UIAlertAction * _Nonnull action) {
-                                  if (!self.room.recordingVM.recordingVideo) {
-                                      return;
-                                  }
-                                  [self enterFullScreenWithRecordingView];
+//                                  if (!self.room.recordingVM.recordingVideo) {
+//                                      return;
+//                                  }
+//                                  [self enterFullScreenWithRecordingView];
+                                  [self.room.speakingRequestVM stopSpeakingRequest];
                               }];
     }
     

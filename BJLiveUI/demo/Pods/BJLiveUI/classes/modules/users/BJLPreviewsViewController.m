@@ -163,7 +163,10 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
                                                               collectionViewLayout:({
             UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
             layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-            layout.itemSize = [BJLPreviewCell cellSize];
+//            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
+//            layout.itemSize = [BJLPreviewCell cellSize];
+            layout.itemSize = [BJLPreviewCell mikiCellSize];
+            //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
             layout.minimumLineSpacing = 0.0;
             layout.minimumInteritemSpacing = 0.0;
             layout.sectionInset = UIEdgeInsetsZero;
@@ -710,6 +713,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 #pragma mark - <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    NSLog(@"mikasa _BJLPreviewsSection_count ===%ld",_BJLPreviewsSection_count);
     return _BJLPreviewsSection_count;
 }
 
@@ -780,38 +784,40 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
     }
     
     BJLPreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    bjl_weakify(self);
-    cell.doubleTapsCallback = cell.doubleTapsCallback = ^(BJLPreviewCell *cell) {
-        bjl_strongify(self);
-        switch (indexPath.section) {
-            case BJLPreviewsSection_PPT: {
-                [self enterFullScreenWithPPTView];
-                break;
-            }
-            case BJLPreviewsSection_presenter: {
-                [self enterFullScreenWithViewForVideoPlayingUser:self.presenter];
-                break;
-            }
-            case BJLPreviewsSection_recording: {
-                [self enterFullScreenWithRecordingView];
-                break;
-            }
-            case BJLPreviewsSection_videoUsers: {
-                BJLMediaUser *user = [self.videoUsers bjl_objectOrNilAtIndex:indexPath.row];
-                [self enterFullScreenWithViewForVideoPlayingUser:user];
-                break;
-            }
-            case BJLPreviewsSection_audioUsers: {
-                break;
-            }
-            case BJLPreviewsSection_requestUsers: {
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    };
+//    2018-10-18 16:25:29 mikasa 补充禁用双击 操作
+//    bjl_weakify(self);
+//    cell.doubleTapsCallback = cell.doubleTapsCallback = ^(BJLPreviewCell *cell) {
+//        bjl_strongify(self);
+//        switch (indexPath.section) {
+//            case BJLPreviewsSection_PPT: {
+//                [self enterFullScreenWithPPTView];
+//                break;
+//            }
+//            case BJLPreviewsSection_presenter: {
+//                [self enterFullScreenWithViewForVideoPlayingUser:self.presenter];
+//                break;
+//            }
+//            case BJLPreviewsSection_recording: {
+//                [self enterFullScreenWithRecordingView];
+//                break;
+//            }
+//            case BJLPreviewsSection_videoUsers: {
+//                BJLMediaUser *user = [self.videoUsers bjl_objectOrNilAtIndex:indexPath.row];
+//                [self enterFullScreenWithViewForVideoPlayingUser:user];
+//                break;
+//            }
+//            case BJLPreviewsSection_audioUsers: {
+//                break;
+//            }
+//            case BJLPreviewsSection_requestUsers: {
+//                break;
+//            }
+//            default: {
+//                break;
+//            }
+//        }
+//    };
+    //    2018-10-18 16:25:29 mikasa 补充禁用双击 操作
     
     switch (indexPath.section) {
         case BJLPreviewsSection_PPT: {

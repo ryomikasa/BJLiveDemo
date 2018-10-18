@@ -12,7 +12,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static const CGFloat heightM = 75.0, heightL = 100.0;
+//static const CGFloat heightM = 75., heightL = 100.0;
+
+static const CGFloat heightM = 85., heightL = 100.0;
 
 NSString
 * const BJLPreviewCellID_view = @"view",
@@ -340,6 +342,16 @@ NSString
     return CGSizeMake([UIScreen mainScreen].bounds.size.width , height);
 }
 //2018-10-17 15:44:12  mikasa 修改视频区域大小
+
+//2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
++ (CGSize)mikiCellSize{
+//    CGFloat height = heightN;
+    return CGSizeMake(74., heightM);
+}
+//2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
+
+
+
 + (NSArray<NSString *> *)allCellIdentifiers {
     return @[BJLPreviewCellID_view,
              BJLPreviewCellID_view_label,

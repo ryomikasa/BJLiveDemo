@@ -32,6 +32,11 @@ FOUNDATION_EXPORT NSString
 + (CGSize)previewctrlSelfviewSsize;
 //2018-10-17 15:45:37 mikasa 视频区域ctrl.view  大小挑中
 
+//2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
++ (CGSize)mikiCellSize;
+//2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
+
+
 @end
 
 NS_ASSUME_NONNULL_END

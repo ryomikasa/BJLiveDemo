@@ -602,27 +602,31 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 }
 
 - (void)enterFullScreenWithViewForVideoPlayingUser:(BJLMediaUser *)videoPlayingUser {
-    videoPlayingUser = [self.room.playingVM playingUserWithID:videoPlayingUser.ID number:videoPlayingUser.number];
-    if (![videoPlayingUser containedInUsers:self.room.playingVM.videoPlayingUsers]) {
-        return;
-    }
-    self.fullScreenItem = ({
-        BJLPreviewItem *item = [BJLPreviewItem new];
-        item.type = BJLPreviewsType_playing;
-        item.view = [self.room.playingVM playingViewForUserWithID:videoPlayingUser.ID];
-        item.viewController = nil;
-        item.aspectRatio = [self.room.playingVM playingViewAspectRatioForUserWithID:videoPlayingUser.ID];
-        item.contentMode = BJLContentMode_scaleToFill;
-        item.playingUser = videoPlayingUser;
-        item;
-    });
-    BOOL isLoadingViewHidden = [[self.videoLoadingList bjl_objectForKey:videoPlayingUser.ID class:[NSNumber class] defaultValue:@(YES)] boolValue];
-    if (isLoadingViewHidden) {
-        [self fullScreenDidFinishLoadingVideo];
-    }
-    else {
-        [self fullScreenDidStartLoadingVideo];
-    }
+//    2018-10-18 14:13:05 mikasa 此处原位视屏区 各种进入全屏功能
+    
+//    2018-10-18 14:12:06  mikasa do nothing 禁用进入全屏功能
+//    videoPlayingUser = [self.room.playingVM playingUserWithID:videoPlayingUser.ID number:videoPlayingUser.number];
+//    if (![videoPlayingUser containedInUsers:self.room.playingVM.videoPlayingUsers]) {
+//        return;
+//    }
+//    self.fullScreenItem = ({
+//        BJLPreviewItem *item = [BJLPreviewItem new];
+//        item.type = BJLPreviewsType_playing;
+//        item.view = [self.room.playingVM playingViewForUserWithID:videoPlayingUser.ID];
+//        item.viewController = nil;
+//        item.aspectRatio = [self.room.playingVM playingViewAspectRatioForUserWithID:videoPlayingUser.ID];
+//        item.contentMode = BJLContentMode_scaleToFill;
+//        item.playingUser = videoPlayingUser;
+//        item;
+//    });
+//    BOOL isLoadingViewHidden = [[self.videoLoadingList bjl_objectForKey:videoPlayingUser.ID class:[NSNumber class] defaultValue:@(YES)] boolValue];
+//    if (isLoadingViewHidden) {
+//        [self fullScreenDidFinishLoadingVideo];
+//    }
+//    else {
+//        [self fullScreenDidStartLoadingVideo];
+//    }
+//    2018-10-18 14:12:06  mikasa do nothing 禁用进入全屏功能
 }
 
 #pragma mark - video loading
@@ -948,26 +952,26 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
     if (self.fullScreenItem.type == BJLPreviewsType_PPT) {
         return;
     }
-    
-    UIAlertController *alert = [UIAlertController
-                                alertControllerWithTitle:@"PPT"
-                                message:nil
-                                preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    [alert bjl_addActionWithTitle:@"全屏"
-                            style:UIAlertActionStyleDefault
-                          handler:^(UIAlertAction * _Nonnull action) {
-                              if (self.fullScreenItem.type == BJLPreviewsType_PPT) {
-                                  return;
-                              }
-                              [self enterFullScreenWithPPTView];
-                          }];
-    
-    [alert bjl_addActionWithTitle:@"取消"
-                            style:UIAlertActionStyleCancel
-                          handler:nil];
-    
-    [self showAlert:alert sourceView:sourceView];
+//    
+//    UIAlertController *alert = [UIAlertController
+//                                alertControllerWithTitle:@"PPT"
+//                                message:nil
+//                                preferredStyle:UIAlertControllerStyleActionSheet];
+//    
+//    [alert bjl_addActionWithTitle:@"全屏"
+//                            style:UIAlertActionStyleDefault
+//                          handler:^(UIAlertAction * _Nonnull action) {
+//                              if (self.fullScreenItem.type == BJLPreviewsType_PPT) {
+//                                  return;
+//                              }
+//                              [self enterFullScreenWithPPTView];
+//                          }];
+//    
+//    [alert bjl_addActionWithTitle:@"取消"
+//                            style:UIAlertActionStyleCancel
+//                          handler:nil];
+//    
+//    [self showAlert:alert sourceView:sourceView];
 }
 
 - (void)showMenuForRecordingViewSourceView:(nullable UIView *)sourceView {

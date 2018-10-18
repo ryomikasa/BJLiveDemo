@@ -59,10 +59,40 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         if (self.room.speakingRequestVM.speakingEnabled) {
-            [self.room.speakingRequestVM stopSpeakingRequest];
+            //2018-10-18 16:42:23 补充下麦时 二次弹窗确认
+//            [self.room.speakingRequestVM stopSpeakingRequest];
+            UIAlertController *alert = [UIAlertController
+                                        alertControllerWithTitle:nil
+                                        message:@"确定下麦？"
+                                        preferredStyle:UIAlertControllerStyleAlert];
+            [alert bjl_addActionWithTitle:@"确定"
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self.room.speakingRequestVM stopSpeakingRequest];
+                                  }];
+            [alert bjl_addActionWithTitle:@"取消"
+                                    style:UIAlertActionStyleCancel
+                                  handler:nil];
+            [self presentViewController:alert animated:NO completion:nil];
+            //2018-10-18 16:42:23 补充下麦时 二次弹窗确认
         }
         else if (self.room.speakingRequestVM.speakingRequestTimeRemaining > 0) {
-            [self.room.speakingRequestVM stopSpeakingRequest];
+            //2018-10-18 16:42:23 补充下麦时 二次弹窗确认
+//            [self.room.speakingRequestVM stopSpeakingRequest];
+            UIAlertController *alert = [UIAlertController
+                                        alertControllerWithTitle:nil
+                                        message:@"确定下麦？"
+                                        preferredStyle:UIAlertControllerStyleAlert];
+            [alert bjl_addActionWithTitle:@"确定"
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self.room.speakingRequestVM stopSpeakingRequest];
+                                  }];
+            [alert bjl_addActionWithTitle:@"取消"
+                                    style:UIAlertActionStyleCancel
+                                  handler:nil];
+            [self presentViewController:alert animated:NO completion:nil];
+            //2018-10-18 16:42:23 补充下麦时 二次弹窗确认
         }
         else {
             if (self.room.featureConfig.disableSpeakingRequest) {

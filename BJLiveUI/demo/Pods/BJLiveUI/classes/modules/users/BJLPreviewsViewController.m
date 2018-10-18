@@ -1027,6 +1027,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
                                                         handler:nil];
                                   [self presentViewController:alert animated:NO completion:nil];
                               }];
+//        2018-10-17 10:29:50 mikasa 根据需求设计 禁用全屏功能 仿照安卓全屏设置为下麦
     }
     
     if (self.room.loginUser.isTeacher

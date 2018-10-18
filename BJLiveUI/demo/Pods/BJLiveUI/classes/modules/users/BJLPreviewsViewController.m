@@ -602,9 +602,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 }
 
 - (void)enterFullScreenWithViewForVideoPlayingUser:(BJLMediaUser *)videoPlayingUser {
-//    2018-10-18 14:13:05 mikasa 此处原位视屏区 各种进入全屏功能
-    
-//    2018-10-18 14:12:06  mikasa do nothing 禁用进入全屏功能
+//    2018-10-18 15:57:51 mikasa 禁用单击 “全屏”||双击而触发的全屏效果 donothing
 //    videoPlayingUser = [self.room.playingVM playingUserWithID:videoPlayingUser.ID number:videoPlayingUser.number];
 //    if (![videoPlayingUser containedInUsers:self.room.playingVM.videoPlayingUsers]) {
 //        return;
@@ -626,7 +624,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 //    else {
 //        [self fullScreenDidStartLoadingVideo];
 //    }
-//    2018-10-18 14:12:06  mikasa do nothing 禁用进入全屏功能
+//    2018-10-18 15:57:51 mikasa 禁用单击 “全屏”||双击而触发的全屏效果 donothing
 }
 
 #pragma mark - video loading
@@ -952,12 +950,12 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
     if (self.fullScreenItem.type == BJLPreviewsType_PPT) {
         return;
     }
-//    
+//2018-10-18 15:52:25 mikasa 禁用视频区左侧白板cell点击吊起函数
 //    UIAlertController *alert = [UIAlertController
 //                                alertControllerWithTitle:@"PPT"
 //                                message:nil
 //                                preferredStyle:UIAlertControllerStyleActionSheet];
-//    
+//
 //    [alert bjl_addActionWithTitle:@"全屏"
 //                            style:UIAlertActionStyleDefault
 //                          handler:^(UIAlertAction * _Nonnull action) {
@@ -966,12 +964,13 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 //                              }
 //                              [self enterFullScreenWithPPTView];
 //                          }];
-//    
+//
 //    [alert bjl_addActionWithTitle:@"取消"
 //                            style:UIAlertActionStyleCancel
 //                          handler:nil];
-//    
+//
 //    [self showAlert:alert sourceView:sourceView];
+//    2018-10-18 15:52:25 mikasa 禁用视频区左侧白板cell点击吊起函数
 }
 
 - (void)showMenuForRecordingViewSourceView:(nullable UIView *)sourceView {

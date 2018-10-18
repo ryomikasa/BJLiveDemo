@@ -1,0 +1,83 @@
+PODS:
+  - BJLiveBase (1.3.4):
+    - BJLiveBase/Base (= 1.3.4)
+  - BJLiveBase/Auth (1.3.4)
+  - BJLiveBase/Base (1.3.4)
+  - BJLiveBase/Ext (1.3.4):
+    - BJLiveBase/Base
+  - BJLiveBase/HUD (1.3.4):
+    - MBProgressHUD (~> 1.0)
+  - BJLiveBase/Masonry (1.3.4):
+    - Masonry (~> 1.1)
+  - BJLiveBase/Networking (1.3.4)
+  - BJLiveBase/Networking+BaijiaYun (1.3.4):
+    - BJLiveBase/Base
+    - BJLiveBase/Networking
+  - BJLiveBase/PocketSocket/Client (1.3.4):
+    - BJLiveBase/PocketSocket/Core
+  - BJLiveBase/PocketSocket/Core (1.3.4)
+  - BJLiveBase/WebImage/AFNetworking (1.3.4):
+    - BJLiveBase/Networking
+    - BJLiveBase/WebImage/BJLWebImage
+  - BJLiveBase/WebImage/BJLWebImage (1.3.4)
+  - BJLiveBase/YYModel (1.3.4)
+  - BJLiveCore (1.3.3):
+    - BJLiveCore/static (= 1.3.3)
+  - BJLiveCore/BJHLMediaPlayer (1.3.3)
+  - BJLiveCore/static (1.3.3):
+    - BJLiveBase (~> 1.3.2)
+    - BJLiveBase/Base
+    - BJLiveBase/Ext
+    - BJLiveBase/Networking
+    - BJLiveBase/Networking+BaijiaYun
+    - BJLiveBase/PocketSocket/Client
+    - BJLiveBase/WebImage/AFNetworking
+    - BJLiveBase/YYModel
+    - BJLiveCore/BJHLMediaPlayer
+    - BJLLogStat/static (~> 0.9.1)
+  - BJLiveUI (1.3.3):
+    - BJLiveUI/static (= 1.3.3)
+  - BJLiveUI/static (1.3.3):
+    - BJLiveBase
+    - BJLiveBase/Auth
+    - BJLiveBase/Base
+    - BJLiveBase/Ext
+    - BJLiveBase/HUD
+    - BJLiveBase/Masonry
+    - BJLiveBase/Networking
+    - BJLiveBase/WebImage/AFNetworking
+    - BJLiveCore (~> 1.3.3)
+    - Masonry
+    - MBProgressHUD (~> 1.0)
+    - QBImagePickerController (~> 3.0)
+  - BJLLogStat/fmdb (0.9.1)
+  - BJLLogStat/static (0.9.1):
+    - BJLiveBase/Networking (~> 1.3.1)
+    - BJLLogStat/fmdb
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.1.0)
+  - QBImagePickerController (3.4.0)
+  - ReactiveObjC (3.1.0)
+
+DEPENDENCIES:
+  - BJLiveUI (from `../`)
+  - Masonry
+  - ReactiveObjC
+
+EXTERNAL SOURCES:
+  BJLiveUI:
+    :path: ../
+
+SPEC CHECKSUMS:
+  BJLiveBase: 5705c2a547e3e4e9c57c6f7707b9e1c4e550a48c
+  BJLiveCore: 8127ba047386765c4734147931da0d9ad6cf4f2d
+  BJLiveUI: 0f99306c6779f5766154264530bc01b0b78279c1
+  BJLLogStat: 9a27d345ab45b663d438842b4f15a91e6e3d06e8
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  ReactiveObjC: 2a38ea15335de4119d8b17caf1db1484f61db902
+
+PODFILE CHECKSUM: be9c40b61b8daf136f61c57229dd0ac516935554
+
+COCOAPODS: 1.4.0

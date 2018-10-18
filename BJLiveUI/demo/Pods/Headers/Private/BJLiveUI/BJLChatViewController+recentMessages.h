@@ -1,0 +1,1 @@
+../../../BJLiveUI/classes/modules/chat/BJLChatViewController+recentMessages.h

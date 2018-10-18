@@ -1,0 +1,1 @@
+../../../BJLiveUI/classes/utilities/extentions/UIPanGestureRecognizer+BJLViewPanning.h

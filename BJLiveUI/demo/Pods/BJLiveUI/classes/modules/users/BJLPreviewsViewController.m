@@ -171,7 +171,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         })];
         collectionView.backgroundColor = [UIColor clearColor];
         collectionView.bounces = YES;
-        collectionView.alwaysBounceHorizontal = YES;
+        collectionView.alwaysBounceHorizontal = NO;
         collectionView.alwaysBounceVertical = NO;
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
@@ -246,7 +246,13 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 
 - (void)makeConstraints {
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        //2018-10-17 15:20:10 mikasa 修改头部视图
+//        make.edges.equalTo(self.view).;
+        
+        make.top.equalTo(self.view.mas_top).with.inset(40.);
+        make.left.equalTo(self.view.mas_left);
+        make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 85.));
+        //2018-10-17 15:20:10 mikasa 修改头部视图
     }];
     
     [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {

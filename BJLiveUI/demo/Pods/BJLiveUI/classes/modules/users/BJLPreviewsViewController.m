@@ -1061,25 +1061,26 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
                          || [playingUser containedInUsers:self.room.playingVM.videoPlayingUsers]);
     
     if (playingVideo) {
-        BOOL isFullScreen = (self.fullScreenItem.type == BJLPreviewsType_playing
-                             && self.fullScreenItem.playingUser == playingUser);
-        if (!isFullScreen) {
-            [alert bjl_addActionWithTitle:@"全屏"
-                                    style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * _Nonnull action) {
-                                      if (![playingUser containedInUsers:self.videoUsers]
-                                          && [playingUser containedInUsers:self.audioUsers]) {
-                                          return;
-                                      }
-                                      BOOL playingVideo = (([playingUser isSameUser:self.presenter] && self.presenterVideoPlaying)
-                                                           || [playingUser containedInUsers:self.room.playingVM.videoPlayingUsers]);
-                                      BOOL isFullScreen = (self.fullScreenItem.type == BJLPreviewsType_playing
-                                                           && self.fullScreenItem.playingUser == playingUser);
-                                      if (playingVideo && !isFullScreen) {
-                                          [self enterFullScreenWithViewForVideoPlayingUser:playingUser];
-                                      }
-                                  }];
-        }
+//        2018-10-16 17:34:42 mikasa 根据s需求设计 点击全屏功能禁用
+//        BOOL isFullScreen = (self.fullScreenItem.type == BJLPreviewsType_playing
+//                             && self.fullScreenItem.playingUser == playingUser);
+//        if (!isFullScreen) {
+//            [alert bjl_addActionWithTitle:@"全屏"
+//                                    style:UIAlertActionStyleDefault
+//                                  handler:^(UIAlertAction * _Nonnull action) {
+//                                      if (![playingUser containedInUsers:self.videoUsers]
+//                                          && [playingUser containedInUsers:self.audioUsers]) {
+//                                          return;
+//                                      }
+//                                      BOOL playingVideo = (([playingUser isSameUser:self.presenter] && self.presenterVideoPlaying)
+//                                                           || [playingUser containedInUsers:self.room.playingVM.videoPlayingUsers]);
+//                                      BOOL isFullScreen = (self.fullScreenItem.type == BJLPreviewsType_playing
+//                                                           && self.fullScreenItem.playingUser == playingUser);
+//                                      if (playingVideo && !isFullScreen) {
+//                                          [self enterFullScreenWithViewForVideoPlayingUser:playingUser];
+//                                      }
+//                                  }];
+//        }
         
         if (playingUser.definitions.count > 1) {
             NSInteger definitionIndex = 0, currentDefinitionIndex = [self.room.playingVM definitionIndexForUserWithID:playingUser.ID];

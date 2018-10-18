@@ -1003,7 +1003,20 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 //                                      return;
 //                                  }
 //                                  [self enterFullScreenWithRecordingView];
-                                  [self.room.speakingRequestVM stopSpeakingRequest];
+                                  
+                                  UIAlertController *alert = [UIAlertController
+                                                              alertControllerWithTitle:nil
+                                                              message:@"确定下麦？"
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+                                  [alert bjl_addActionWithTitle:@"确定"
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                            [self.room.speakingRequestVM stopSpeakingRequest];
+                                                        }];
+                                  [alert bjl_addActionWithTitle:@"取消"
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:nil];
+                                  [self presentViewController:alert animated:NO completion:nil];
                               }];
     }
     

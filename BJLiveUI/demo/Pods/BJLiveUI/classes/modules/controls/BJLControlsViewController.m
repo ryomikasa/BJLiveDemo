@@ -315,10 +315,13 @@ NS_ASSUME_NONNULL_BEGIN
         //2018-10-19 10:00:50 mikasa bottombar 布局修改
     }];
     
+    
+//    2018-10-19 13:48:59 mikasa 修改横屏按钮位置约束 图片内容
     UIButton *last = nil;
     NSArray<UIButton *> *buttons = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
                                     ? @[self.moreButton/* , self.rotateButton */, self.cameraButton, self.micButton]
-                                    : @[self.moreButton, self.rotateButton, self.cameraButton, self.micButton]);
+//                                    : @[self.moreButton, self.rotateButton, self.cameraButton, self.micButton]);
+                                    : @[self.moreButton, self.cameraButton, self.micButton]);
     for (UIButton *button in buttons) {
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(last.mas_left ?: self.bottomToolBar).with.offset(last ? - BJLViewSpaceM : 0.0);
@@ -327,6 +330,13 @@ NS_ASSUME_NONNULL_BEGIN
         }];
         last = button;
     }
+    
+    [self.rotateButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar).inset(BJLViewSpaceNBM+BJButtonSizeNB);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 13:48:59 mikasa 修改横屏按钮位置约束 图片内容
     
     [self.chatButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.centerY.equalTo(self.bottomToolBar);

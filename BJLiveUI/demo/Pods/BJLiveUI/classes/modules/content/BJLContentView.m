@@ -28,8 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // self.backgroundColor = [UIColor bjl_grayImagePlaceholderColor];
-        
+//         self.backgroundColor = [UIColor bjl_grayImagePlaceholderColor];
+//2018-10-19 18:14:35 mikasa 禁用展示白板区域 +禁用展示PPT区域 学生点击手势
+        [self setUserInteractionEnabled:NO];
+//2018-10-19 18:14:35 mikasa 禁用展示白板区域 +禁用展示PPT区域 学生点击手势
         [self makeSubviews];
         
         bjl_weakify(self);

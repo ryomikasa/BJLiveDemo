@@ -326,6 +326,9 @@ NS_ASSUME_NONNULL_BEGIN
                      make.bottom.equalTo(self.room.slideshowViewController.view).offset(- BJLViewSpaceM);
                      make.size.mas_equalTo(CGSizeMake(buttonWidth, buttonHeight));
                  }];
+//                 2018-10-19 17:29:38 mikasa 禁用上方 ‘白板‘按钮点击
+                 [button setUserInteractionEnabled:NO];
+//                 2018-10-19 17:29:38 mikasa 禁用上方 ‘白板‘按钮点击
                  button;
              });
              return YES;

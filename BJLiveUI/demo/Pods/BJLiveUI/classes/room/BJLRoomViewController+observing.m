@@ -500,7 +500,9 @@ NS_ASSUME_NONNULL_BEGIN
              if (!isPPT && self.room.slideshowViewController.drawingEnabled) {
                  [self.room.slideshowViewController updateDrawingEnabled:NO];
              }
-             self.room.slideshowViewController.pageControlButton.enabled = isPPT;
+//           2018-10-19 17:31:06 mikasa 禁用上方’白板’点击
+//             self.room.slideshowViewController.pageControlButton.enabled = isPPT;
+//           2018-10-19 17:31:06 mikasa 禁用上方’白板’点击
              return YES;
          }];
 }

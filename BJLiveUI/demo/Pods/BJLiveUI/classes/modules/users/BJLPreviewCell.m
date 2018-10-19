@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //static const CGFloat heightM = 75., heightL = 100.0;
 
-static const CGFloat heightM = 85., heightL = 100.0;
+static const CGFloat heightM = 55., heightL = 100.0;
 
 NSString
 * const BJLPreviewCellID_view = @"view",
@@ -70,20 +70,24 @@ NSString
         self.contentView.backgroundColor = [UIColor whiteColor];
         self->_customCoverView = ({
             UIView *view = [UIView new];
+            [view setTag:111];
             [self.contentView addSubview:view];
             view;
         });
     }
     
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_view_label]) {
+//        2018-10-18 18:38:02 mikasa 视屏view
         self->_customCoverView = ({
             UIView *view = [UIView new];
+            [view setTag:222];
             [self.contentView addSubview:view];
             view;
         });
         
         self->_videoLoadingView = ({
             UIView *view = [UIView new];
+            [view setTag:333];
             view.backgroundColor = [UIColor bjl_colorWithHexString:@"4A4A4A"];
             view.hidden = YES;
             [self.contentView addSubview:view];
@@ -93,6 +97,7 @@ NSString
         self->_videoLoadingImageView = ({
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bjl_ic_user_loading"]];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
+            [imageView setTag:444];
             [self.videoLoadingView addSubview:imageView];
             imageView;
         });
@@ -102,6 +107,7 @@ NSString
         || [self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label_buttons]) {
         self->_avatarView = ({
             UIImageView *imageView = [UIImageView new];
+            [imageView setTag:555];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             [self.contentView addSubview:imageView];
             imageView;
@@ -111,6 +117,7 @@ NSString
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label]) {
         self->_cameraView = ({
             UIImageView *imageView = [UIImageView new];
+            [imageView setTag:666];
             imageView.image = [UIImage imageNamed:@"bjl_ic_video_on"];
             [self.contentView addSubview:imageView];
             imageView;
@@ -121,6 +128,7 @@ NSString
         || [self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label]) {
         self->_nameView = ({
             UIButton *button = [BJLImageRightButton new];
+            [button setTag:777];
             button.titleLabel.font = [UIFont systemFontOfSize:13.0];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             // [button setImage:[[UIImage imageNamed:@"bjl_ic_video_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
@@ -134,6 +142,7 @@ NSString
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label_buttons]) {
         self->_actionGroupView = ({
             UIView *view = [UIView new];
+            [view setTag:888];
             view.backgroundColor = [UIColor bjl_darkDimColor];
             [self.contentView addSubview:view];
             view;
@@ -141,6 +150,7 @@ NSString
         
         self->_messageLabel = ({
             UILabel *label = [UILabel new];
+            [label setTag:999];
             label.textAlignment = NSTextAlignmentCenter;
             label.font = [UIFont systemFontOfSize:12.0];
             label.textColor = [UIColor whiteColor];
@@ -196,7 +206,11 @@ NSString
 - (void)makeConstraints {
     if (self.customCoverView) {
         [self.customCoverView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.contentView);
+//            make.edges.equalTo(self.contentView);
+            make.edges.centerX.equalTo(self.contentView);
+//            make.edges.bottom.equalTo(self.contentView).bottom.inset(30.);
+            make.edges.top.equalTo(self.contentView);
+            make.size.mas_equalTo(CGSizeMake(([UIScreen mainScreen].bounds.size.width - 16*5)/4, ([UIScreen mainScreen].bounds.size.width - 16*5)/4*3/4));
         }];
     }
     
@@ -325,20 +339,20 @@ NSString
 }
 
 + (CGSize)cellSize {
-    static BOOL iPad = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-    });
-    
-    CGFloat height = iPad ? heightL : heightM;
-    return CGSizeMake(height * 4 / 3, height);
+//    static BOOL iPad = NO;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+//    });
+//
+//    CGFloat height = iPad ? heightL : heightM;
+    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 16*5)/4, ([UIScreen mainScreen].bounds.size.width - 16*5)/4*3/4);
 }
 
 //2018-10-17 15:44:12  mikasa 修改视频区域大小
 
 + (CGSize)previewctrlSelfviewSsize {
-    CGFloat height = heightM+40.;
+    CGFloat height = heightM+30.+40.;
     return CGSizeMake([UIScreen mainScreen].bounds.size.width , height);
 }
 //2018-10-17 15:44:12  mikasa 修改视频区域大小
@@ -346,7 +360,8 @@ NSString
 //2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
 + (CGSize)mikiCellSize{
 //    CGFloat height = heightN;
-    return CGSizeMake(74., heightM);
+    
+    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 16*5)/4, heightM+30);
 }
 //2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
 

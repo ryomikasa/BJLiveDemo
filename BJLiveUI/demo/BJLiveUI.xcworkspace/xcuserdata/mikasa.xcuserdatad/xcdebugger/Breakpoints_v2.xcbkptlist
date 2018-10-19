@@ -522,11 +522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/controls/BJLControlsViewController.m"
-            timestampString = "561618216.37638"
+            timestampString = "561620166.1040339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
             landmarkName = "-makeObserving"
             landmarkType = "7">
          </BreakpointContent>

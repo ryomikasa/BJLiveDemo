@@ -296,6 +296,39 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 //    2018-10-19 13:02:48 mikasa 追加线路按钮 的切换点击回调
     
+//    sharpCallback
+//2018-10-19 13:28:30 mikasa 追加清晰度按钮的点击回调
+    [self.controlsViewController setSharpCallback:^(id  _Nullable sender) {
+        bjl_strongify(self);
+        NSString *no1Str = [NSString stringWithFormat:@"流畅%@",self.room.recordingVM.videoDefinition == BJLVideoDefinition_std?@"(当前)":@""];
+        NSString *no2Str = [NSString stringWithFormat:@"高清%@",self.room.recordingVM.videoDefinition == BJLVideoDefinition_high?@"(当前)":@""];
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:nil
+                                    message:nil
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        [alert bjl_addActionWithTitle:no1Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.recordingVM.videoDefinition != BJLVideoDefinition_std) {
+                                      self.room.recordingVM.videoDefinition = BJLVideoDefinition_std;
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:no2Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.recordingVM.videoDefinition != BJLVideoDefinition_high) {
+                                      self.room.recordingVM.videoDefinition = BJLVideoDefinition_high;
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:@"取消"
+                                style:UIAlertActionStyleCancel
+                              handler:nil];
+        [self presentViewController:alert animated:NO completion:nil];
+    }];
+//2018-10-19 13:28:30 mikasa 追加清晰度按钮的点击回调
+    
     [self.chatViewController setShowImageViewCallback:^(UIImageView *imageView) {
         bjl_strongify(self);
         if (!imageView.image) {

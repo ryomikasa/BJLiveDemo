@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) void (^chatCallback)(id _Nullable sender);
 
 @property (nonatomic, copy, nullable) void (^lineroadCallback)(id _Nullable sender);
+@property (nonatomic, copy, nullable) void (^sharpCallback)(id _Nullable sender);
 @end
 
 NS_ASSUME_NONNULL_END

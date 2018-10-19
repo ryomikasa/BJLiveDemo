@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) UIButton *micButton, *cameraButton, *rotateButton, *moreButton;
 
-@property (nonatomic) UIButton *chatButton, *lineroadButton;
+@property (nonatomic) UIButton *chatButton, *lineroadButton,*sharpButton;
 
 @end
 
@@ -201,6 +201,15 @@ NS_ASSUME_NONNULL_BEGIN
     [self.lineroadButton setHidden:YES];
    
 //    2018-10-19 10:13:15 mikasa 底部添加线路按钮
+    
+//    2018-10-19 13:10:54 mikasa 底部添加 “清晰度”按钮
+    self.sharpButton = [self makeButtonWithIconName:@"" selectedIconName:@"" size:BJButtonSizeNB superview:self.bottomToolBar];
+    [self.sharpButton setBackgroundColor:[UIColor bjl_colorWithHexString:@"#020202"]];
+    [self.sharpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.sharpButton setAlpha:0.5];
+    [self.sharpButton setHidden:YES];
+//    2018-10-19 13:10:54 mikasa 底部添加 “清晰度”按钮
+    
 }
 
 - (UIButton *)makeButtonWithIconName:(nullable NSString *)iconName
@@ -324,13 +333,20 @@ NS_ASSUME_NONNULL_BEGIN
         make.width.height.equalTo(@(BJButtonSizeNB));
     }];
     
+//    2018-10-19 13:11:53 mikasa 底部‘线路a’按钮约束
     [self.lineroadButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.bottomToolBar).inset((BJLViewSpaceNBM+BJButtonSizeNB)*3);
         make.centerY.equalTo(self.bottomToolBar);
         make.width.height.equalTo(@(BJButtonSizeNB));
     }];
-    
-
+//    2018-10-19 13:11:53 mikasa 底部‘线路a’按钮约束
+//    2018-10-19 13:12:23 mikasa 底部 ‘清晰度’ 按钮约束
+    [self.sharpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar).inset((BJLViewSpaceNBM+BJButtonSizeNB)*2);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 13:12:23 mikasa 底部 ‘清晰度’ 按钮约束
 }
 
 #pragma mark - makeObserving
@@ -443,6 +459,16 @@ NS_ASSUME_NONNULL_BEGIN
              return YES;
          }];
 //2018-10-19 11:10:56 mikasa 监听线路变化
+    
+//  2018-10-19 13:16:39 mikasa 监听清晰度变化
+    [self bjl_kvo:BJLMakeProperty(self.room.recordingVM, videoDefinition)
+         observer:^BOOL(id _Nullable old, NSNumber * _Nullable now) {
+             bjl_strongify(self);
+//            BJLVideoDefinition videoDefinition = now.integerValue;
+            [self updateButtonStates];
+             return YES;
+         }];
+//  2018-10-19 13:16:39 mikasa 监听清晰度变化
 }
 
 - (void)updateButtonStates {
@@ -502,6 +528,13 @@ NS_ASSUME_NONNULL_BEGIN
     [self.lineroadButton setTitle:titleStr forState:UIControlStateNormal];
     [self.lineroadButton.titleLabel setFont:[UIFont systemFontOfSize:13.]];
 //    2018-10-19 11:25:57 mikasa 底部添加线路按钮
+    
+//2018-10-19 13:20:59 mikasa 底部添加清晰度按钮
+    self.sharpButton.hidden = loading || penOnly;
+    NSString *sharpTitle = self.room.recordingVM.videoDefinition == BJLVideoDefinition_std ? @"流畅":@"高清";
+    [self.sharpButton setTitle:sharpTitle forState:UIControlStateNormal];
+    [self.sharpButton.titleLabel setFont:[UIFont systemFontOfSize:13.]];
+//2018-10-19 13:20:59 mikasa 底部添加清晰度按钮
 }
 
 #pragma mark - makeActions
@@ -564,6 +597,12 @@ NS_ASSUME_NONNULL_BEGIN
     } forControlEvents:UIControlEventTouchUpInside];
 //2018-10-19 10:55:43 mikasa 添加线路按钮的点击处理
     
+//    2018-10-19 13:26:03 mikasa 添加清晰度按钮的点击处理
+    [self.sharpButton bjl_addHandler:^(__kindof UIControl * _Nullable sender) {
+        bjl_strongify(self);
+        if (self.sharpCallback) self.sharpCallback(sender);
+    } forControlEvents:UIControlEventTouchUpInside];
+//    2018-10-19 13:26:03 mikasa 添加清晰度按钮的点击处理
     
 }
 

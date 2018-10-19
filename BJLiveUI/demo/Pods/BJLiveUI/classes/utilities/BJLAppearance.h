@@ -42,6 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
 //2018-10-19 09:54:53 mikasa 底部工具按钮大小变更
 #define BJButtonSizeNB 45.0
 //2018-10-19 09:54:53 mikasa 底部工具按钮大小变更
+
+//2018-10-19 14:58:39 mikasa 右侧工具按钮大小
+#define BBJButtonSizeRightTool 40.
+//2018-10-19 14:58:39 mikasa 右侧工具按钮大小
 #define BJLButtonCornerRadius 3.0
 
 #define BJLBadgeSize    20.0

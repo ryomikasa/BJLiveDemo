@@ -251,6 +251,51 @@ NS_ASSUME_NONNULL_BEGIN
                                                          verEdges:edges verSize:size];
     }];
     
+    
+//    2018-10-19 13:02:48 mikasa 追加线路按钮 的切换点击回调
+    [self.controlsViewController setLineroadCallback:^(id  _Nullable sender) {
+       bjl_strongify(self);
+        NSString *no1Str = [NSString stringWithFormat:@"线路1%@",self.room.mediaVM.downLinkType == BJLLinkType_TCP?@"(当前)":@""];
+        NSString *no2Str = [NSString stringWithFormat:@"线路2%@",self.room.mediaVM.downLinkType == BJLLinkType_UDP?@"(当前)":@""];
+        NSString *linkTypeReadonlyText = @"暂时不能切换线路";
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:nil
+                                    message:nil
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        [alert bjl_addActionWithTitle:no1Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.mediaVM.downLinkTypeReadOnly) {
+                                      [self showProgressHUDWithText:linkTypeReadonlyText];
+                                      return;
+                                  }
+                                  BJLError *error = [self.room.mediaVM updateDownLinkType:BJLLinkType_TCP] ;
+                                  if (error) {
+                                      [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:no2Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.mediaVM.downLinkTypeReadOnly) {
+                                      [self showProgressHUDWithText:linkTypeReadonlyText];
+                                      return;
+                                  }
+                                  BJLError *error = [self.room.mediaVM updateDownLinkType:BJLLinkType_UDP] ;
+                                  if (error) {
+                                      [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                                  }
+                              }];
+        
+        [alert bjl_addActionWithTitle:@"取消"
+                                style:UIAlertActionStyleCancel
+                              handler:nil];
+        [self presentViewController:alert animated:NO completion:nil];
+    }];
+//    2018-10-19 13:02:48 mikasa 追加线路按钮 的切换点击回调
+    
     [self.chatViewController setShowImageViewCallback:^(UIImageView *imageView) {
         bjl_strongify(self);
         if (!imageView.image) {

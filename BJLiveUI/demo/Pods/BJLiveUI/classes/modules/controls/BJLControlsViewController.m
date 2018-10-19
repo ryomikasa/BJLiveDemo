@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) UIButton *micButton, *cameraButton, *rotateButton, *moreButton;
 
-@property (nonatomic) UIButton *chatButton;
+@property (nonatomic) UIButton *chatButton, *lineroadButton;
 
 @end
 
@@ -67,7 +67,6 @@ NS_ASSUME_NONNULL_BEGIN
         
         return nil;
     }];
-    
     self.view.userInteractionEnabled = YES;
 }
 
@@ -193,6 +192,15 @@ NS_ASSUME_NONNULL_BEGIN
                                   selectedIconName:nil
                                               size:BJLButtonSizeM
                                          superview:self.bottomToolBar];
+    
+//    2018-10-19 10:13:15 mikasa 底部添加线路按钮
+    self.lineroadButton = [self makeButtonWithIconName:@"" selectedIconName:@"" size:BJButtonSizeNB superview:self.bottomToolBar];
+    [self.lineroadButton setBackgroundColor:[UIColor bjl_colorWithHexString:@"#020202"]];
+    [self.lineroadButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.lineroadButton setAlpha:0.5];
+    [self.lineroadButton setHidden:YES];
+   
+//    2018-10-19 10:13:15 mikasa 底部添加线路按钮
 }
 
 - (UIButton *)makeButtonWithIconName:(nullable NSString *)iconName
@@ -289,8 +297,13 @@ NS_ASSUME_NONNULL_BEGIN
         make.centerY.equalTo(self.view);
     }];
     [self.bottomToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.view).inset(BJLViewSpaceM);
-        make.height.equalTo(@(BJLButtonSizeM));
+        //2018-10-19 10:00:50 mikasa bottombar 布局修改
+        make.left.right.bottom.equalTo(self.view).inset(BJLViewSpaceNM);
+        make.height.equalTo(@(BJButtonSizeNB));
+//        make.centerX.equalTo(self.view);
+//        make.bottom.equalTo(self.view).inset(17.);
+//        make.size.mas_equalTo(CGSizeMake(([UIScreen mainScreen].bounds.size.width - 2*17.), 45.));
+        //2018-10-19 10:00:50 mikasa bottombar 布局修改
     }];
     
     UIButton *last = nil;
@@ -308,8 +321,16 @@ NS_ASSUME_NONNULL_BEGIN
     
     [self.chatButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.centerY.equalTo(self.bottomToolBar);
-        make.width.height.equalTo(@(BJLButtonSizeM));
+        make.width.height.equalTo(@(BJButtonSizeNB));
     }];
+    
+    [self.lineroadButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar).inset((BJLViewSpaceNBM+BJButtonSizeNB)*3);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+    
+
 }
 
 #pragma mark - makeObserving
@@ -413,6 +434,15 @@ NS_ASSUME_NONNULL_BEGIN
              self.cameraButton.selected = self.room.recordingVM.recordingVideo;
              return YES;
          }];
+//2018-10-19 11:10:56 mikasa 监听线路变化
+    [self bjl_kvo:BJLMakeProperty(self.room.mediaVM, downLinkType)
+          options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+           filter:ifIntegerChanged
+         observer:^BOOL(NSNumber * _Nullable old, NSNumber * _Nullable now) {
+             [self updateButtonStates];
+             return YES;
+         }];
+//2018-10-19 11:10:56 mikasa 监听线路变化
 }
 
 - (void)updateButtonStates {
@@ -466,6 +496,12 @@ NS_ASSUME_NONNULL_BEGIN
     /* left bottom */
     
     self.chatButton.hidden = loading || penOnly;
+//    2018-10-19 11:25:57 mikasa 底部添加线路按钮
+    self.lineroadButton.hidden = loading || penOnly;
+    NSString *titleStr =  self.room.mediaVM.downLinkType == BJLLinkType_TCP ?@"线路1" :@"线路2";
+    [self.lineroadButton setTitle:titleStr forState:UIControlStateNormal];
+    [self.lineroadButton.titleLabel setFont:[UIFont systemFontOfSize:13.]];
+//    2018-10-19 11:25:57 mikasa 底部添加线路按钮
 }
 
 #pragma mark - makeActions
@@ -520,6 +556,15 @@ NS_ASSUME_NONNULL_BEGIN
         bjl_strongify(self);
         if (self.chatCallback) self.chatCallback(sender);
     } forControlEvents:UIControlEventTouchUpInside];
+    
+//2018-10-19 10:55:43 mikasa 添加线路按钮的点击处理
+    [self.lineroadButton bjl_addHandler:^(__kindof UIControl * _Nullable sender) {
+        bjl_strongify(self);
+        if (self.lineroadCallback) self.lineroadCallback(sender);
+    } forControlEvents:UIControlEventTouchUpInside];
+//2018-10-19 10:55:43 mikasa 添加线路按钮的点击处理
+    
+    
 }
 
 #pragma mark - public

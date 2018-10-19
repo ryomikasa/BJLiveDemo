@@ -143,7 +143,11 @@ NS_ASSUME_NONNULL_BEGIN
     self.handButton = [self makeButtonWithIconName:@"bjl_ic_handup"
                                   selectedIconName:@"bjl_ic_handup_on"
                                               size:BJLButtonSizeL
-                                         superview:nil]; // add to self.rightToolBar later
+//                       2018-10-19 14:16:57 mikasa 修改举手按钮位置
+//                                         superview:nil]; // add to self.rightToolBar later
+                                             superview:self.bottomToolBar]; // add to self.rightToolBar later
+//                       2018-10-19 14:16:57 mikasa 修改举手按钮位置
+    
     
     self.handProgressView = ({
         BJLAnnularProgressView *progressView = [BJLAnnularProgressView new];
@@ -253,7 +257,10 @@ NS_ASSUME_NONNULL_BEGIN
     else {
         if (self.room.loginUser.groupID == 0) {
             // self.room.speakingRequestVM.speakingEnabled || NOT
-            buttons = @[self.penButton, self.handButton, self.usersButton];
+//            2018-10-19 14:11:21 mikasa 修改举手按钮位置大小
+//            buttons = @[self.penButton, self.handButton, self.usersButton];
+            buttons = @[self.penButton, self.usersButton];
+//            2018-10-19 14:11:21 mikasa 修改举手按钮位置大小
         }
         else {
             buttons = @[self.penButton, self.usersButton];
@@ -357,6 +364,13 @@ NS_ASSUME_NONNULL_BEGIN
         make.width.height.equalTo(@(BJButtonSizeNB));
     }];
 //    2018-10-19 13:12:23 mikasa 底部 ‘清晰度’ 按钮约束
+//    2018-10-19 14:12:47 mikasa 底部 ‘举手’按钮约束
+    [self.handButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 14:12:47 mikasa 底部 ‘举手’按钮约束
 }
 
 #pragma mark - makeObserving
@@ -502,21 +516,29 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL hideUserList = self.room.featureConfig.hideUserList && !isTeacherOrAssistant;
     
     /* right */
-    
-    self.pptButton.hidden = loading || penOnly || !isTeacherOrAssistant;
+//2018-10-19 14:22:56  mikasa  隐藏PPT 按钮 只有老师进来时候才有 当前客户端没有老师
+//    self.pptButton.hidden = loading || penOnly || !isTeacherOrAssistant;
+    self.pptButton.hidden = YES;
+//2018-10-19 14:22:56  mikasa  隐藏PPT 按钮 只有老师进来时候才有 当前客户端没有老师
     
     self.handButton.hidden = loading || penOnly || isTeacherOrAssistant || inGroup || !is1toN;
     self.handButton.selected = !isTeacherOrAssistant && !isGroupTeacherOrAssistant && speakingEnabled;
     
-    self.penButton.hidden = loading || !(isTeacherOrAssistant || (speakingEnabled && drawingGranted));
-    self.penButton.selected = drawingEnabled;
+//    2018-10-19 14:35:25 mikasa 画笔按钮隐藏 需求设计学生不能画笔PPT
+//    self.penButton.hidden = loading || !(isTeacherOrAssistant || (speakingEnabled && drawingGranted));
+//    self.penButton.selected = drawingEnabled;
+    self.penButton.hidden = YES;
+//    2018-10-19 14:35:25 mikasa 画笔按钮隐藏 需求设计学生不能画笔PPT
     
-    self.usersButton.hidden = loading || penOnly || hideUserList;
-    
+//    2018-10-19 14:36:09 mikasa 当前用户列表按钮隐藏 需求设计 无此功能
+//    self.usersButton.hidden = loading || penOnly || hideUserList;
+    self.usersButton.hidden = YES;
+//    2018-10-19 14:36:09 mikasa 当前用户列表按钮隐藏 需求设计 无此功能
     /* right bottom */
-    
-    self.moreButton.hidden = loading || penOnly;
-    
+//    2018-10-19 14:07:42 mikasa 隐藏更多按钮
+//    self.moreButton.hidden = loading || penOnly;
+    self.moreButton.hidden = YES;
+//    2018-10-19 14:07:42 mikasa 隐藏更多按钮
     self.rotateButton.hidden = loading || penOnly;
     // 解决旋转动画过程中更改 button 状态无效的问题
     bjl_dispatch_async_main_queue(^{

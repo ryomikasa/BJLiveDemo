@@ -23,9 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) UIButton *pptButton, *handButton, *penButton, *usersButton;
 @property (nonatomic) BJLAnnularProgressView *handProgressView;
 
-@property (nonatomic) UIButton *micButton, *cameraButton, *rotateButton, *moreButton;
+@property (nonatomic) UIButton *micButton, *cameraButton, *rotateButton, *moreButton,*voiceButton;
 
-@property (nonatomic) UIButton *chatButton;
+@property (nonatomic) UIButton *chatButton, *lineroadButton,*sharpButton;
 
 @end
 
@@ -67,7 +67,6 @@ NS_ASSUME_NONNULL_BEGIN
         
         return nil;
     }];
-    
     self.view.userInteractionEnabled = YES;
 }
 
@@ -144,7 +143,11 @@ NS_ASSUME_NONNULL_BEGIN
     self.handButton = [self makeButtonWithIconName:@"bjl_ic_handup"
                                   selectedIconName:@"bjl_ic_handup_on"
                                               size:BJLButtonSizeL
-                                         superview:nil]; // add to self.rightToolBar later
+//                       2018-10-19 14:16:57 mikasa 修改举手按钮位置
+//                                         superview:nil]; // add to self.rightToolBar later
+                                             superview:self.bottomToolBar]; // add to self.rightToolBar later
+//                       2018-10-19 14:16:57 mikasa 修改举手按钮位置
+    
     
     self.handProgressView = ({
         BJLAnnularProgressView *progressView = [BJLAnnularProgressView new];
@@ -172,7 +175,14 @@ NS_ASSUME_NONNULL_BEGIN
     self.micButton = [self makeButtonWithIconName:@"bjl_ic_stopaudio_closed"
                                  selectedIconName:nil
                                              size:BJLButtonSizeM
-                                        superview:self.bottomToolBar];
+//                      2018-10-19 14:52:16 mikasa 修改mic 按钮位置大小图片
+//                                        superview:self.bottomToolBar];
+                                        superview:self.rightToolBar];
+//                      2018-10-19 14:52:16 mikasa 修改mic 按钮位置大小图片
+//    2018-10-19 16:14:00 mikasa 追加mic 音量lv按钮
+    self.voiceButton = [[UIButton alloc]init];
+//    2018-10-19 16:14:00 mikasa 追加mic 音量lv按钮
+    
     
     self.cameraButton = [self makeButtonWithIconName:@"bjl_ic_stopvideo_closed"
                                     selectedIconName:@"bjl_ic_stopvideo_open"
@@ -193,6 +203,24 @@ NS_ASSUME_NONNULL_BEGIN
                                   selectedIconName:nil
                                               size:BJLButtonSizeM
                                          superview:self.bottomToolBar];
+    
+//    2018-10-19 10:13:15 mikasa 底部添加线路按钮
+    self.lineroadButton = [self makeButtonWithIconName:@"" selectedIconName:@"" size:BJButtonSizeNB superview:self.bottomToolBar];
+    [self.lineroadButton setBackgroundColor:[UIColor bjl_colorWithHexString:@"#020202"]];
+    [self.lineroadButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.lineroadButton setAlpha:0.5];
+    [self.lineroadButton setHidden:YES];
+   
+//    2018-10-19 10:13:15 mikasa 底部添加线路按钮
+    
+//    2018-10-19 13:10:54 mikasa 底部添加 “清晰度”按钮
+    self.sharpButton = [self makeButtonWithIconName:@"" selectedIconName:@"" size:BJButtonSizeNB superview:self.bottomToolBar];
+    [self.sharpButton setBackgroundColor:[UIColor bjl_colorWithHexString:@"#020202"]];
+    [self.sharpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.sharpButton setAlpha:0.5];
+    [self.sharpButton setHidden:YES];
+//    2018-10-19 13:10:54 mikasa 底部添加 “清晰度”按钮
+    
 }
 
 - (UIButton *)makeButtonWithIconName:(nullable NSString *)iconName
@@ -236,7 +264,13 @@ NS_ASSUME_NONNULL_BEGIN
     else {
         if (self.room.loginUser.groupID == 0) {
             // self.room.speakingRequestVM.speakingEnabled || NOT
-            buttons = @[self.penButton, self.handButton, self.usersButton];
+//            2018-10-19 14:11:21 mikasa 修改举手按钮位置大小
+//            buttons = @[self.penButton, self.handButton, self.usersButton];
+//            2018-10-19 17:03:47 mikasa 修改camera按钮大小位置图标
+//            buttons = @[self.penButton, self.usersButton,self.micButton,self.voiceButton];
+            buttons = @[self.penButton, self.usersButton,self.micButton,self.voiceButton,self.cameraButton];
+//            2018-10-19 17:03:47 mikasa 修改camera按钮大小位置图标
+//            2018-10-19 14:11:21 mikasa 修改举手按钮位置大小
         }
         else {
             buttons = @[self.penButton, self.usersButton];
@@ -249,9 +283,33 @@ NS_ASSUME_NONNULL_BEGIN
     for (UIButton *button in buttons) {
         [self.rightToolBar addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(last.mas_bottom ?: self.rightToolBar).with.offset(last ? BJLViewSpaceM : 0.0);
-            make.left.right.equalTo(self.rightToolBar);
-            make.width.height.equalTo(@(BJLButtonSizeL));
+//  2018-10-19 15:37:23 mikasa 修改右侧mic 视频按钮位置
+//            make.top.equalTo(last.mas_bottom ?: self.rightToolBar).with.offset(last ? BJLViewSpaceM : 0.0);
+            if ([button isEqual:self.micButton]) {
+                make.bottom.equalTo(self.rightToolBar);
+                make.right.equalTo(self.rightToolBar);
+                make.width.height.equalTo(@(BJButtonSizeNB));
+            }
+//  2018-10-19 15:37:23 mikasa 修改右侧mic 视频按钮位置
+//            2018-10-19 16:15:38 mikasa 追加音量大小按钮位置
+            else if ([button isEqual:self.voiceButton]){
+                make.bottom.equalTo(self.rightToolBar);
+                make.left.equalTo(self.rightToolBar);
+                make.width.height.equalTo(@(CGSizeMake(15., 25.)));
+            }
+//            2018-10-19 16:15:38 mikasa 追加音量大小按钮位置
+            
+//            2018-10-19 17:01:10 mikasa 调整camera按钮大小位置图片
+            else if ([button isEqual:self.cameraButton]){
+                make.bottom.equalTo(self.rightToolBar).inset(BJButtonSizeNB +BJLViewSpaceNBM);
+                make.right.equalTo(self.rightToolBar);
+                make.width.height.equalTo(@(BJButtonSizeNB));
+            }
+//            2018-10-19 17:01:10 mikasa 调整camera按钮大小位置图片
+            else{
+                make.left.right.equalTo(self.rightToolBar);
+                make.width.height.equalTo(@(BJLButtonSizeL));
+            }
         }];
         last = button;
     }
@@ -267,36 +325,73 @@ NS_ASSUME_NONNULL_BEGIN
     
     bjl_returnIfRobot(0.2);
     
-    NSArray<NSString *> * const imageNames = @[@"bjl_ic_stopaudio_1",
-                                               @"bjl_ic_stopaudio_2",
+    NSArray<NSString *> * const imageNames = @[@"bjl_ic_stopaudio_2",
                                                @"bjl_ic_stopaudio_3",
                                                @"bjl_ic_stopaudio_4",
                                                @"bjl_ic_stopaudio_5",
-                                               @"bjl_ic_stopaudio_6"];
+                                               @"bjl_ic_stopaudio_6",
+                                               @"bjl_ic_stopaudio_7"];
     NSInteger imageIndex = round(imageNames.count * inputVolumeLevel);
     NSString *imageName = [imageNames bjl_objectOrNilAtIndex:imageIndex] ?: imageNames.firstObject;
     UIImage *image = [UIImage imageNamed:imageName];
-    [self.micButton setImage:image forState:UIControlStateSelected];
-    [self.micButton setImage:image forState:UIControlStateSelected | UIControlStateHighlighted];
+    [self.micButton setImage:[UIImage imageNamed:@"bjl_ic_stopaudio_1"] forState:UIControlStateSelected];
+    [self.micButton setImage:[UIImage imageNamed:@"bjl_ic_stopaudio_1"] forState:UIControlStateSelected | UIControlStateHighlighted];
+//    2018-10-19 16:17:44 mikasa 追加音量大小按钮 变化
+    [self.voiceButton setImage:image forState:UIControlStateNormal];
+    
+//    2018-10-19 16:17:44 mikasa 追加音量大小按钮 变化
 }
 
 #pragma mark - makeConstraints
 
 - (void)makeConstraints {
-    [self.rightToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view).inset(BJLViewSpaceM);
-        // 纵向居中时【不能】从 bottomToolBar 顶部算起，因为竖屏时上边有发言列表、横屏时上边有退出按钮
-        make.centerY.equalTo(self.view);
-    }];
-    [self.bottomToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.view).inset(BJLViewSpaceM);
-        make.height.equalTo(@(BJLButtonSizeM));
-    }];
     
+    [self.bottomToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        //2018-10-19 10:00:50 mikasa bottombar 布局修改
+        make.left.right.bottom.equalTo(self.view).inset(BJLViewSpaceNM);
+        make.height.equalTo(@(BJButtonSizeNB));
+//        make.centerX.equalTo(self.view);
+//        make.bottom.equalTo(self.view).inset(17.);
+//        make.size.mas_equalTo(CGSizeMake(([UIScreen mainScreen].bounds.size.width - 2*17.), 45.));
+        //2018-10-19 10:00:50 mikasa bottombar 布局修改
+    }];
+//    2018-10-19 14:41:38 mikasa 修改右侧工具条位置大小
+    [self.rightToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        //        make.right.equalTo(self.view).inset(BJLViewSpaceM);
+        //        // 纵向居中时【不能】从 bottomToolBar 顶部算起，因为竖屏时上边有发言列表、横屏时上边有退出按钮
+        //        make.centerY.equalTo(self.view);
+        make.right.equalTo(self.view).inset(BJLViewSpaceNM);
+        make.bottom.equalTo(self.view).inset(BJLViewSpaceNBM+BJButtonSizeNB+BJLViewSpaceNM);
+        make.size.mas_equalTo(CGSizeMake(BJButtonSizeNB+4.+25., BJButtonSizeNB+BJLViewSpaceNBM+BJButtonSizeNB));
+        
+    }];
+//    2018-10-19 14:41:38 mikasa 修改右侧工具条位置大小
+    
+//    2018-10-19 13:48:59 mikasa 修改横屏按钮位置约束 图片内容
     UIButton *last = nil;
     NSArray<UIButton *> *buttons = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
-                                    ? @[self.moreButton/* , self.rotateButton */, self.cameraButton, self.micButton]
-                                    : @[self.moreButton, self.rotateButton, self.cameraButton, self.micButton]);
+
+//                                    2018-10-19 14:53:19 mikasa 修改mic 按钮大小位置图片
+//                                    ? @[self.moreButton/* , self.rotateButton */, self.cameraButton, self.micButton]
+                                    
+//                                    2018-10-19 16:57:56 mikasa 修改视频d按钮大小位置图片
+//                                    ? @[self.moreButton/* , self.rotateButton */, self.cameraButton]
+                                    ? @[self.moreButton/* , self.rotateButton */]
+//                                    2018-10-19 16:57:56 mikasa 修改视频d按钮大小位置图片
+                                    
+//                                    2018-10-19 14:53:19 mikasa 修改mic 按钮大小位置图片
+                                    
+//                                    : @[self.moreButton, self.rotateButton, self.cameraButton, self.micButton]);
+                                    
+//                                    2018-10-19 14:53:19 mikasa 修改mic 按钮大小位置图片
+//                                    : @[self.moreButton, self.cameraButton, self.micButton]);
+                                    
+//                                    2018-10-19 16:57:56 mikasa 修改视频d按钮大小位置图片
+//                                    : @[self.moreButton, self.cameraButton]);
+                                    : @[self.moreButton]);
+//                                    2018-10-19 16:57:56 mikasa 修改视频d按钮大小位置图片
+
+//                                    2018-10-19 14:53:19 mikasa 修改mic 按钮大小位置图片
     for (UIButton *button in buttons) {
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(last.mas_left ?: self.bottomToolBar).with.offset(last ? - BJLViewSpaceM : 0.0);
@@ -306,10 +401,46 @@ NS_ASSUME_NONNULL_BEGIN
         last = button;
     }
     
+    [self.rotateButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar).inset(BJLViewSpaceNBM+BJButtonSizeNB);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 13:48:59 mikasa 修改横屏按钮位置约束 图片内容
+    
     [self.chatButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.centerY.equalTo(self.bottomToolBar);
-        make.width.height.equalTo(@(BJLButtonSizeM));
+        make.width.height.equalTo(@(BJButtonSizeNB));
     }];
+    
+//    2018-10-19 13:11:53 mikasa 底部‘线路a’按钮约束
+    [self.lineroadButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar).inset((BJLViewSpaceNBM+BJButtonSizeNB)*3);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 13:11:53 mikasa 底部‘线路a’按钮约束
+//    2018-10-19 13:12:23 mikasa 底部 ‘清晰度’ 按钮约束
+    [self.sharpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar).inset((BJLViewSpaceNBM+BJButtonSizeNB)*2);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 13:12:23 mikasa 底部 ‘清晰度’ 按钮约束
+//    2018-10-19 14:12:47 mikasa 底部 ‘举手’按钮约束
+    [self.handButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomToolBar);
+        make.centerY.equalTo(self.bottomToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 14:12:47 mikasa 底部 ‘举手’按钮约束
+//    2018-10-19 14:56:31 mikasa 右侧 ‘mic’按钮约束
+    [self.micButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.rightToolBar);
+        make.bottom.equalTo(self.rightToolBar);
+        make.width.height.equalTo(@(BJButtonSizeNB));
+    }];
+//    2018-10-19 14:56:31 mikasa 右侧 ‘mic’按钮约束
 }
 
 #pragma mark - makeObserving
@@ -389,6 +520,10 @@ NS_ASSUME_NONNULL_BEGIN
              self.micButton.selected = self.room.recordingVM.recordingAudio;
              if (self.micButton.selected) {
                  [self updateMicButtonSelectedIconWithInputVolumeLevel:1.0];
+             }else{
+//                 2018-10-19 16:55:19 mikasa 追加的音量按钮再切换开关时需要有 或者 无图片
+                 [self.voiceButton setImage: nil forState:UIControlStateNormal];
+//                 2018-10-19 16:55:19 mikasa 追加的音量按钮再切换开关时需要有 或者 无图片
              }
              return YES;
          }];
@@ -413,6 +548,25 @@ NS_ASSUME_NONNULL_BEGIN
              self.cameraButton.selected = self.room.recordingVM.recordingVideo;
              return YES;
          }];
+//2018-10-19 11:10:56 mikasa 监听线路变化
+    [self bjl_kvo:BJLMakeProperty(self.room.mediaVM, downLinkType)
+          options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+           filter:ifIntegerChanged
+         observer:^BOOL(NSNumber * _Nullable old, NSNumber * _Nullable now) {
+             [self updateButtonStates];
+             return YES;
+         }];
+//2018-10-19 11:10:56 mikasa 监听线路变化
+    
+//  2018-10-19 13:16:39 mikasa 监听清晰度变化
+    [self bjl_kvo:BJLMakeProperty(self.room.recordingVM, videoDefinition)
+         observer:^BOOL(id _Nullable old, NSNumber * _Nullable now) {
+             bjl_strongify(self);
+//            BJLVideoDefinition videoDefinition = now.integerValue;
+            [self updateButtonStates];
+             return YES;
+         }];
+//  2018-10-19 13:16:39 mikasa 监听清晰度变化
 }
 
 - (void)updateButtonStates {
@@ -436,21 +590,29 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL hideUserList = self.room.featureConfig.hideUserList && !isTeacherOrAssistant;
     
     /* right */
-    
-    self.pptButton.hidden = loading || penOnly || !isTeacherOrAssistant;
+//2018-10-19 14:22:56  mikasa  隐藏PPT 按钮 只有老师进来时候才有 当前客户端没有老师
+//    self.pptButton.hidden = loading || penOnly || !isTeacherOrAssistant;
+    self.pptButton.hidden = YES;
+//2018-10-19 14:22:56  mikasa  隐藏PPT 按钮 只有老师进来时候才有 当前客户端没有老师
     
     self.handButton.hidden = loading || penOnly || isTeacherOrAssistant || inGroup || !is1toN;
     self.handButton.selected = !isTeacherOrAssistant && !isGroupTeacherOrAssistant && speakingEnabled;
     
-    self.penButton.hidden = loading || !(isTeacherOrAssistant || (speakingEnabled && drawingGranted));
-    self.penButton.selected = drawingEnabled;
+//    2018-10-19 14:35:25 mikasa 画笔按钮隐藏 需求设计学生不能画笔PPT
+//    self.penButton.hidden = loading || !(isTeacherOrAssistant || (speakingEnabled && drawingGranted));
+//    self.penButton.selected = drawingEnabled;
+    self.penButton.hidden = YES;
+//    2018-10-19 14:35:25 mikasa 画笔按钮隐藏 需求设计学生不能画笔PPT
     
-    self.usersButton.hidden = loading || penOnly || hideUserList;
-    
+//    2018-10-19 14:36:09 mikasa 当前用户列表按钮隐藏 需求设计 无此功能
+//    self.usersButton.hidden = loading || penOnly || hideUserList;
+    self.usersButton.hidden = YES;
+//    2018-10-19 14:36:09 mikasa 当前用户列表按钮隐藏 需求设计 无此功能
     /* right bottom */
-    
-    self.moreButton.hidden = loading || penOnly;
-    
+//    2018-10-19 14:07:42 mikasa 隐藏更多按钮
+//    self.moreButton.hidden = loading || penOnly;
+    self.moreButton.hidden = YES;
+//    2018-10-19 14:07:42 mikasa 隐藏更多按钮
     self.rotateButton.hidden = loading || penOnly;
     // 解决旋转动画过程中更改 button 状态无效的问题
     bjl_dispatch_async_main_queue(^{
@@ -459,6 +621,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.micButton.hidden = loading || penOnly || !(isTeacherOrAssistant || speakingEnabled);
     self.micButton.selected = self.room.recordingVM.recordingAudio;
+    NSLog(@"mic button if show hidden mikasa %d",(loading || penOnly || !(isTeacherOrAssistant || speakingEnabled)));
     
     self.cameraButton.hidden = loading || penOnly || !(isTeacherOrAssistant || speakingEnabled);
     self.cameraButton.selected = self.room.recordingVM.recordingVideo;
@@ -466,6 +629,19 @@ NS_ASSUME_NONNULL_BEGIN
     /* left bottom */
     
     self.chatButton.hidden = loading || penOnly;
+//    2018-10-19 11:25:57 mikasa 底部添加线路按钮
+    self.lineroadButton.hidden = loading || penOnly;
+    NSString *titleStr =  self.room.mediaVM.downLinkType == BJLLinkType_TCP ?@"线路1" :@"线路2";
+    [self.lineroadButton setTitle:titleStr forState:UIControlStateNormal];
+    [self.lineroadButton.titleLabel setFont:[UIFont systemFontOfSize:13.]];
+//    2018-10-19 11:25:57 mikasa 底部添加线路按钮
+    
+//2018-10-19 13:20:59 mikasa 底部添加清晰度按钮
+    self.sharpButton.hidden = loading || penOnly;
+    NSString *sharpTitle = self.room.recordingVM.videoDefinition == BJLVideoDefinition_std ? @"流畅":@"高清";
+    [self.sharpButton setTitle:sharpTitle forState:UIControlStateNormal];
+    [self.sharpButton.titleLabel setFont:[UIFont systemFontOfSize:13.]];
+//2018-10-19 13:20:59 mikasa 底部添加清晰度按钮
 }
 
 #pragma mark - makeActions
@@ -520,6 +696,21 @@ NS_ASSUME_NONNULL_BEGIN
         bjl_strongify(self);
         if (self.chatCallback) self.chatCallback(sender);
     } forControlEvents:UIControlEventTouchUpInside];
+    
+//2018-10-19 10:55:43 mikasa 添加线路按钮的点击处理
+    [self.lineroadButton bjl_addHandler:^(__kindof UIControl * _Nullable sender) {
+        bjl_strongify(self);
+        if (self.lineroadCallback) self.lineroadCallback(sender);
+    } forControlEvents:UIControlEventTouchUpInside];
+//2018-10-19 10:55:43 mikasa 添加线路按钮的点击处理
+    
+//    2018-10-19 13:26:03 mikasa 添加清晰度按钮的点击处理
+    [self.sharpButton bjl_addHandler:^(__kindof UIControl * _Nullable sender) {
+        bjl_strongify(self);
+        if (self.sharpCallback) self.sharpCallback(sender);
+    } forControlEvents:UIControlEventTouchUpInside];
+//    2018-10-19 13:26:03 mikasa 添加清晰度按钮的点击处理
+    
 }
 
 #pragma mark - public

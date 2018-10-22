@@ -22,6 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define BJLViewSpaceS   5.0
 #define BJLViewSpaceM   10.0
+
+//2018-10-19 10:31:05 mikasa 底部工具条按钮间的间隙
+#define BJLViewSpaceNBM   12.0
+//2018-10-19 10:31:05 mikasa 底部工具条按钮间的间隙
+//2018-10-19 09:54:53 mikasa 底部工具按钮左右边距变更
+#define BJLViewSpaceNM   17.0
+//2018-10-19 09:54:53 mikasa 底部工具按钮左右边距变更
 #define BJLViewSpaceL   15.0
 
 // 44.0 - 12.0 = 32.0 for verInsets.top, horInsets.left, horInsets.right
@@ -32,6 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
 #define BJLButtonSizeS  30.0
 #define BJLButtonSizeM  36.0
 #define BJLButtonSizeL  46.0
+//2018-10-19 09:54:53 mikasa 底部工具按钮大小变更
+#define BJButtonSizeNB 45.0
+//2018-10-19 09:54:53 mikasa 底部工具按钮大小变更
+
+//2018-10-19 14:58:39 mikasa 右侧工具按钮大小
+#define BBJButtonSizeRightTool 40.
+//2018-10-19 14:58:39 mikasa 右侧工具按钮大小
 #define BJLButtonCornerRadius 3.0
 
 #define BJLBadgeSize    20.0

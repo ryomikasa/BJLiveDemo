@@ -43,6 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.exitButton = ({
         UIButton *button = [UIButton new];
         [button setImage:[UIImage imageNamed:@"bjl_ic_exit"] forState:UIControlStateNormal];
+//        2018-10-19 09:29:08 mikasa 隐藏右上角关闭按钮
+        [button setHidden:YES];
+//        2018-10-19 09:29:08 mikasa 隐藏右上角关闭按钮
         [self addSubview:button];
         button;
     });

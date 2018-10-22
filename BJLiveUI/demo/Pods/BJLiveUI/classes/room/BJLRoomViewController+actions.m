@@ -184,23 +184,41 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
         // TODO: MingLQ - [self setRecordingAudio:recordingVideo:];
-        [BJLAuthorization checkMicrophoneAccessAndRequest:YES callback:^(BOOL granted, UIAlertController * _Nullable alert) {
-            if (granted) {
-                BJLError *error = [self.room.recordingVM setRecordingAudio:!self.room.recordingVM.recordingAudio
-                                                            recordingVideo:self.room.recordingVM.recordingVideo];
-                if (error) {
-                    [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+//        2018-10-19 18:38:09 mikasa 追加判定 视频关闭时，关闭音频操作将触发下麦
+        if (self.room.recordingVM.recordingAudio && !self.room.recordingVM.recordingVideo) {// 视频未开启 &&音频开启 = 关闭音频->同时关闭下麦
+            UIAlertController *alert = [UIAlertController
+                                        alertControllerWithTitle:nil
+                                        message:@"同时关闭音频、视频将会下麦。确定吗？"
+                                        preferredStyle:UIAlertControllerStyleAlert];
+            [alert bjl_addActionWithTitle:@"确定"
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self.room.speakingRequestVM stopSpeakingRequest];
+                                  }];
+            [alert bjl_addActionWithTitle:@"取消"
+                                    style:UIAlertActionStyleCancel
+                                  handler:nil];
+            [self presentViewController:alert animated:NO completion:nil];
+        }else{
+            [BJLAuthorization checkMicrophoneAccessAndRequest:YES callback:^(BOOL granted, UIAlertController * _Nullable alert) {
+                if (granted) {
+                    BJLError *error = [self.room.recordingVM setRecordingAudio:!self.room.recordingVM.recordingAudio
+                                                                recordingVideo:self.room.recordingVM.recordingVideo];
+                    if (error) {
+                        [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                    }
+                    else {
+                        [self showProgressHUDWithText:(self.room.recordingVM.recordingAudio
+                                                       ? @"麦克风已打开"
+                                                       : @"麦克风已关闭")];
+                    }
                 }
-                else {
-                    [self showProgressHUDWithText:(self.room.recordingVM.recordingAudio
-                                                   ? @"麦克风已打开"
-                                                   : @"麦克风已关闭")];
+                else if (alert) {
+                    [self presentViewController:alert animated:YES completion:nil];
                 }
-            }
-            else if (alert) {
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-        }];
+            }];
+        }
+//        2018-10-19 18:38:09 mikasa 追加判定 视频关闭时，关闭音频操作将触发下麦
     }];
     [self.controlsViewController setCameraCallback:^(id _Nullable sender) {
         bjl_strongify(self);
@@ -217,23 +235,43 @@ NS_ASSUME_NONNULL_BEGIN
             [self showProgressHUDWithText:@"音频课不能打开摄像头"];
             return;
         }
-        [BJLAuthorization checkCameraAccessAndRequest:YES callback:^(BOOL granted, UIAlertController * _Nullable alert) {
-            if (granted) {
-                BJLError *error = [self.room.recordingVM setRecordingAudio:self.room.recordingVM.recordingAudio
-                                                            recordingVideo:!self.room.recordingVM.recordingVideo];
-                if (error) {
-                    [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+//      2018-10-19 18:35:16 mikasa 追加判定 音频关闭时 关闭视频操作将下麦  设计如此
+        if (!self.room.recordingVM.recordingAudio && self.room.recordingVM.recordingVideo) {// 音频未开启 &&视频开启 = 关闭视频->同时关闭下麦
+            UIAlertController *alert = [UIAlertController
+                                        alertControllerWithTitle:nil
+                                        message:@"同时关闭音频、视频将会下麦。确定吗？"
+                                        preferredStyle:UIAlertControllerStyleAlert];
+            [alert bjl_addActionWithTitle:@"确定"
+                                    style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * _Nonnull action) {
+                                      [self.room.speakingRequestVM stopSpeakingRequest];
+                                  }];
+            [alert bjl_addActionWithTitle:@"取消"
+                                    style:UIAlertActionStyleCancel
+                                  handler:nil];
+            [self presentViewController:alert animated:NO completion:nil];
+        }else{
+            [BJLAuthorization checkCameraAccessAndRequest:YES callback:^(BOOL granted, UIAlertController * _Nullable alert) {
+                if (granted) {
+                    BJLError *error = [self.room.recordingVM setRecordingAudio:self.room.recordingVM.recordingAudio
+                                                                recordingVideo:!self.room.recordingVM.recordingVideo];
+                    if (error) {
+                        [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                    }
+                    else {
+                        [self showProgressHUDWithText:(self.room.recordingVM.recordingVideo
+                                                       ? @"摄像头已打开"
+                                                       : @"摄像头已关闭")];
+                    }
                 }
-                else {
-                    [self showProgressHUDWithText:(self.room.recordingVM.recordingVideo
-                                                   ? @"摄像头已打开"
-                                                   : @"摄像头已关闭")];
+                else if (alert) {
+                    [self presentViewController:alert animated:YES completion:nil];
                 }
-            }
-            else if (alert) {
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-        }];
+            }];
+
+        }
+//      2018-10-19 18:35:16 mikasa 追加判定 音频关闭时 关闭视频操作将下麦  设计如此
+        
     }];
     [self.controlsViewController setChatCallback:^(id _Nullable sender) {
         bjl_strongify(self);
@@ -250,6 +288,84 @@ NS_ASSUME_NONNULL_BEGIN
                                                          horEdges:edges horSize:size
                                                          verEdges:edges verSize:size];
     }];
+    
+    
+//    2018-10-19 13:02:48 mikasa 追加线路按钮 的切换点击回调
+    [self.controlsViewController setLineroadCallback:^(id  _Nullable sender) {
+       bjl_strongify(self);
+        NSString *no1Str = [NSString stringWithFormat:@"线路1%@",self.room.mediaVM.downLinkType == BJLLinkType_TCP?@"(当前)":@""];
+        NSString *no2Str = [NSString stringWithFormat:@"线路2%@",self.room.mediaVM.downLinkType == BJLLinkType_UDP?@"(当前)":@""];
+        NSString *linkTypeReadonlyText = @"暂时不能切换线路";
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:nil
+                                    message:nil
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        [alert bjl_addActionWithTitle:no1Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.mediaVM.downLinkTypeReadOnly) {
+                                      [self showProgressHUDWithText:linkTypeReadonlyText];
+                                      return;
+                                  }
+                                  BJLError *error = [self.room.mediaVM updateDownLinkType:BJLLinkType_TCP] ;
+                                  if (error) {
+                                      [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:no2Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.mediaVM.downLinkTypeReadOnly) {
+                                      [self showProgressHUDWithText:linkTypeReadonlyText];
+                                      return;
+                                  }
+                                  BJLError *error = [self.room.mediaVM updateDownLinkType:BJLLinkType_UDP] ;
+                                  if (error) {
+                                      [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                                  }
+                              }];
+        
+        [alert bjl_addActionWithTitle:@"取消"
+                                style:UIAlertActionStyleCancel
+                              handler:nil];
+        [self presentViewController:alert animated:NO completion:nil];
+    }];
+//    2018-10-19 13:02:48 mikasa 追加线路按钮 的切换点击回调
+    
+//    sharpCallback
+//2018-10-19 13:28:30 mikasa 追加清晰度按钮的点击回调
+    [self.controlsViewController setSharpCallback:^(id  _Nullable sender) {
+        bjl_strongify(self);
+        NSString *no1Str = [NSString stringWithFormat:@"流畅%@",self.room.recordingVM.videoDefinition == BJLVideoDefinition_std?@"(当前)":@""];
+        NSString *no2Str = [NSString stringWithFormat:@"高清%@",self.room.recordingVM.videoDefinition == BJLVideoDefinition_high?@"(当前)":@""];
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:nil
+                                    message:nil
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        [alert bjl_addActionWithTitle:no1Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.recordingVM.videoDefinition != BJLVideoDefinition_std) {
+                                      self.room.recordingVM.videoDefinition = BJLVideoDefinition_std;
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:no2Str
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  bjl_strongify(self);
+                                  if (self.room.recordingVM.videoDefinition != BJLVideoDefinition_high) {
+                                      self.room.recordingVM.videoDefinition = BJLVideoDefinition_high;
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:@"取消"
+                                style:UIAlertActionStyleCancel
+                              handler:nil];
+        [self presentViewController:alert animated:NO completion:nil];
+    }];
+//2018-10-19 13:28:30 mikasa 追加清晰度按钮的点击回调
     
     [self.chatViewController setShowImageViewCallback:^(UIImageView *imageView) {
         bjl_strongify(self);

@@ -76,6 +76,7 @@ typedef NS_ENUM(NSInteger, BJLPreviewsSection) {
     BJLPreviewsSection_videoUsers,
     BJLPreviewsSection_audioUsers,
     BJLPreviewsSection_requestUsers,
+    BJLPreviewsSection_default,
     _BJLPreviewsSection_count
 };
 
@@ -100,7 +101,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 @property (nonatomic, readwrite) NSMutableDictionary *videoLoadingList;
 @property (nonatomic, readwrite) UIView *headerView;
 @property (nonatomic, readwrite) UILabel *movL;
-
+@property (nonatomic, assign) int i ;
 @end
 
 @implementation BJLPreviewsViewController
@@ -132,8 +133,6 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor clearColor];
-    
     bjl_weakify(self);
     [self bjl_kvo:BJLMakeProperty(self.room, vmsAvailable)
            filter:^BOOL(NSNumber * _Nullable old, NSNumber * _Nullable now) {
@@ -158,43 +157,40 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 #pragma mark -
 
 - (void)makeSubviews {
-    self.collectionView = ({
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
-                                                              collectionViewLayout:({
-            UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
-            layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-//            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
-//            layout.itemSize = [BJLPreviewCell cellSize];
-            layout.itemSize = [BJLPreviewCell mikiCellSize];
-            //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
-            layout.minimumLineSpacing = 0.0;
-            layout.minimumInteritemSpacing = 0.0;
-            layout.sectionInset = UIEdgeInsetsZero;
-            layout;
-        })];
-        collectionView.backgroundColor = [UIColor clearColor];
-        collectionView.bounces = YES;
-        collectionView.alwaysBounceHorizontal = NO;
-        collectionView.alwaysBounceVertical = NO;
-        collectionView.showsHorizontalScrollIndicator = NO;
-        collectionView.showsVerticalScrollIndicator = NO;
+ 
+        
+        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
+        //            layout.itemSize = [BJLPreviewCell cellSize];
+        layout.itemSize = [BJLPreviewCell cellSize];
+        //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
+        layout.minimumLineSpacing = 0.0;
+        layout.minimumInteritemSpacing = 0.0;
+        
+         self.collectionView  = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        _collectionView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
+        _collectionView.bounces = YES;
+        _collectionView.hidden = YES;
+        _collectionView.alwaysBounceHorizontal = NO;
+        _collectionView.alwaysBounceVertical = NO;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.showsVerticalScrollIndicator = NO;
 //        2018-10-17 11:27:58 mikasa collectionview 禁止滑动 需求设计如此
-        [collectionView setScrollEnabled:NO];
+        [_collectionView setScrollEnabled:NO];
         //        2018-10-17 11:27:58 mikasa collectionview 禁止滑动 需求设计如此
-        collectionView.clipsToBounds = NO;
-        collectionView.dataSource = self;
-        collectionView.delegate = self;
+        _collectionView.clipsToBounds = NO;
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
         for (NSString *cellIdentifier in [BJLPreviewCell allCellIdentifiers]) {
-            [collectionView registerClass:[BJLPreviewCell class]
+            [_collectionView registerClass:[BJLPreviewCell class]
                forCellWithReuseIdentifier:cellIdentifier];
         }
-        [self.view addSubview:collectionView];
-        collectionView;
-    });
+        [self.view addSubview:_collectionView];
 // 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
     self.headerView =({
         UIView *headView = [UIView new];
-        headView.backgroundColor = [UIColor whiteColor];
+        headView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
 //        //2018-10-17 15:00:26 mikasa 调试 暂时屏蔽
 //        [headView setHidden:YES];
 //        //2018-10-17 15:00:26 mikasa 调试 暂时屏蔽
@@ -218,7 +214,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
     
     self.backgroundView = ({
         UIView *backgroundView = [UIView new];
-        backgroundView.backgroundColor = [UIColor bjl_lightGrayTextColor];
+        backgroundView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F9F9F9"];
         [self.view insertSubview:backgroundView atIndex:0];
         backgroundView;
     });
@@ -254,12 +250,12 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         
         make.top.equalTo(self.view.mas_top).with.inset(40.);
         make.left.equalTo(self.view.mas_left);
-        make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 85.));
+        make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 103));
         //2018-10-17 15:20:10 mikasa 修改头部视图
     }];
     
     [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        make.edges.equalTo(self.collectionView );
     }];
     
     [self.moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -281,6 +277,8 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         make.centerY.equalTo(self.headerView);
         make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width -15., 22.5));
     }];
+    
+    _collectionView.hidden = NO;
     // 2018-10-17 14:39:36 mikasa collectionview 添加假头视图 @“视频”
 }
 
@@ -693,16 +691,16 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 
 // !!!: `collectionView:cellForItemAtIndexPath:` will not be called if height is 0
 - (void)makeContentSize:(MASConstraintMaker *)make forHorizontal:(BOOL)isHorizontal {
-//    CGSize size = [BJLPreviewCell cellSize];
-    CGSize size = [BJLPreviewCell previewctrlSelfviewSsize];
+   CGSize size = [BJLPreviewCell cellSize];
+  //  CGSize size = [BJLPreviewCell previewctrlSelfviewSsize];
     // size.width = self.numberOfItems > 0 ? size.width *= self.numberOfItems : 0.0;
-    size.height = self.numberOfItems > 0 ? size.height : 0.0;
+    size.height = self.numberOfItems > 0 ? size.height + 40 : 0.0;
     // make.width.equalTo(@(size.width)).priorityHigh();
     make.height.equalTo(@(size.height));
     
     self.collectionView.contentInset = bjl_structSet(self.collectionView.contentInset, {
         // TODO: - size.width should be BJLTopBarView.customContainerView.left
-        set.right = isHorizontal ? size.width : 0.0;
+        set.right = isHorizontal ? size.width: 0.0;
     });
 }
 
@@ -714,15 +712,19 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     NSLog(@"mikasa _BJLPreviewsSection_count ===%ld",_BJLPreviewsSection_count);
+    _i= 0;
     return _BJLPreviewsSection_count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+   
     switch (section) {
         case BJLPreviewsSection_PPT: {
 //            return (self.room.slideshowViewController
 //                    && self.fullScreenItem.type != BJLPreviewsType_PPT
 //                    && !self.room.slideshowViewController.isBlank) ? 1 : 0;
+            (self.room.slideshowViewController
+             && self.fullScreenItem.type != BJLPreviewsType_PPT) ? _i++: 0;
             return (self.room.slideshowViewController
                     && self.fullScreenItem.type != BJLPreviewsType_PPT) ? 1 : 0;
         }
@@ -730,23 +732,39 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
             BOOL presenterFullScreen = (self.fullScreenItem.type == BJLPreviewsType_playing
                                         && self.fullScreenItem.playingUser
                                         && [self.fullScreenItem.playingUser isSameUser:self.presenter]);
+            (self.presenter
+             && !presenterFullScreen) ? _i++ : 0;
             return (self.presenter
                     && !presenterFullScreen) ? 1 : 0;
         }
         case BJLPreviewsSection_recording: {
+            (self.room.recordingVM.recordingVideo
+             && self.fullScreenItem.type != BJLPreviewsType_recording) ? _i++ : 0;
             return (self.room.recordingVM.recordingVideo
                     && self.fullScreenItem.type != BJLPreviewsType_recording) ? 1 : 0;
         }
         case BJLPreviewsSection_videoUsers: {
+            _i += self.videoUsers.count;
             return self.videoUsers.count;
         }
         case BJLPreviewsSection_audioUsers: {
+            _i += self.audioUsers.count;
             return self.audioUsers.count;
         }
         case BJLPreviewsSection_requestUsers: {
+            (self.room.loginUser.isTeacherOrAssistant
+             ? _i +=self.room.speakingRequestVM.speakingRequestUsers.count
+             : 0);
             return (self.room.loginUser.isTeacherOrAssistant
                     ? self.room.speakingRequestVM.speakingRequestUsers.count
                     : 0);
+        }
+        case BJLPreviewsSection_default: {
+            if (_i < 4) {
+                NSLog(@" jjjjj ===%d",_i);
+                return 4 - _i;
+            }
+            return 0;
         }
         default: {
             return 0;
@@ -777,6 +795,9 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
             break;
         case BJLPreviewsSection_requestUsers:
             cellIdentifier = BJLPreviewCellID_avatar_label_buttons;
+            break;
+        case BJLPreviewsSection_default:
+            cellIdentifier = BJLPreviewCellID_default;
             break;
         default:
             cellIdentifier = BJLPreviewCellID_view;
@@ -818,7 +839,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 //        }
 //    };
     //    2018-10-18 16:25:29 mikasa 补充禁用双击 操作
-    
+    NSInteger identity = 0;
     switch (indexPath.section) {
         case BJLPreviewsSection_PPT: {
             [self bjl_addChildViewController:self.room.slideshowViewController addSubview:^(UIView * _Nonnull parentView, UIView * _Nonnull childView) {
@@ -828,51 +849,93 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
             break;
         }
         case BJLPreviewsSection_presenter: {
-            NSString *title = [NSString stringWithFormat:@"%@(%@)",
-                               self.presenter.name,
-                               self.presenter.isTeacher ? @"老师" : @"主讲"];
+            NSString *title = [NSString stringWithFormat:@"%@",
+                               self.presenter.name];
+            if  (self.presenter.role == BJLUserRole_teacher) {
+                identity = 1;
+            }else if (self.presenter.role == BJLUserRole_assistant){
+                identity = 2;
+                
+            }else{
+                identity = 0;
+            }
             if (self.presenterVideoPlaying) {
                 [cell updateWithView:[self.room.playingVM playingViewForUserWithID:self.presenter.ID]
-                               title:title];
+                               title:title identity:identity];
                 BOOL isLoadingViewHidden = [[self.videoLoadingList bjl_objectForKey:self.presenter.ID class:[NSNumber class] defaultValue:@(YES)] boolValue];
                 [cell updateLoadingViewHidden:isLoadingViewHidden];
             }
             else {
                 [cell updateWithImageURLString:self.presenter.avatar
                                          title:title
-                                      hasVideo:bjl_cast(BJLMediaUser, self.presenter).videoOn];
+                                      hasVideo:bjl_cast(BJLMediaUser, self.presenter).videoOn identity:identity];
                 [cell updateLoadingViewHidden:YES];
             }
             break;
         }
         case BJLPreviewsSection_recording: {
+            if  (self.room.loginUser.role == BJLUserRole_teacher) {
+                identity = 1;
+            }else if (self.room.loginUser.role == BJLUserRole_assistant){
+                identity = 2;
+                
+            }else{
+                identity = 0;
+            }
             // [cell updateWithView:self.room.recordingView];
             [cell updateWithView:self.room.recordingView
-                           title:self.room.loginUser.name];
+                           title:@"我" identity:identity];
             [cell updateLoadingViewHidden:YES];
             break;
         }
         case BJLPreviewsSection_videoUsers: {
-            BJLMediaUser *user = [self.videoUsers bjl_objectOrNilAtIndex:indexPath.row];
+              BJLMediaUser *user = [self.videoUsers bjl_objectOrNilAtIndex:indexPath.row];
+            if  (user.role == BJLUserRole_teacher) {
+                identity = 1;
+            }else if (user.role  == BJLUserRole_assistant){
+                identity = 2;
+                
+            }else{
+                identity = 0;
+            }
+          
             [cell updateWithView:[self.room.playingVM playingViewForUserWithID:user.ID]
-                           title:user.name];
+                           title:user.name identity:identity];
             BOOL isLoadingViewHidden = [[self.videoLoadingList bjl_objectForKey:user.ID class:[NSNumber class] defaultValue:@(YES)] boolValue];
             [cell updateLoadingViewHidden:isLoadingViewHidden];
             break;
         }
-        case BJLPreviewsSection_audioUsers: {
+        case  BJLPreviewsSection_audioUsers: {
             BJLMediaUser *user = [self.audioUsers bjl_objectOrNilAtIndex:indexPath.row];
+            if  (user.role == BJLUserRole_teacher) {
+                identity = 1;
+            }else if (user.role == BJLUserRole_assistant){
+                identity = 2;
+                
+            }else{
+                identity = 0;
+            }
+            
             [cell updateWithImageURLString:user.avatar
                                      title:user.name
-                                  hasVideo:user.videoOn];
+                                  hasVideo:user.videoOn identity:identity];
             [cell updateLoadingViewHidden:YES];
             break;
         }
         case BJLPreviewsSection_requestUsers: {
+            
             BJLUser *user = [self.room.speakingRequestVM.speakingRequestUsers bjl_objectOrNilAtIndex:indexPath.row];
+            if  (user.role == BJLUserRole_teacher) {
+                identity = 1;
+            }else if (user.role == BJLUserRole_assistant){
+                identity = 2;
+                
+            }else{
+                identity = 0;
+            }
             [cell updateWithImageURLString:user.avatar
                                      title:[NSString stringWithFormat:@"%@举手中", user.name ?: @""]
-                                  hasVideo:NO];
+                                  hasVideo:NO identity:identity];
             [cell updateLoadingViewHidden:YES];
             if (self.room.loginUser.isTeacherOrAssistant) {
                 bjl_weakify(self);
@@ -887,6 +950,12 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
             }
             break;
         }
+        case BJLPreviewsSection_default: {
+             [cell updateWithImageURLString:@"" title:@"暂无"
+                                  hasVideo:NO identity:5];
+            [cell updateLoadingViewHidden:YES];
+        }
+            break;
         default: {
             break;
         }

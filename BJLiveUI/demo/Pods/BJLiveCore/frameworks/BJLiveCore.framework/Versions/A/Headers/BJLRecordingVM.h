@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
  @see `speakingRequestVM.speakingEnabled`
  #param user 对象用户，不能是老师
  #param audioOn YES：打开音频采集，NO：关闭音频采集
- #param videoOn YES：打开视频采集，NO：关闭视频采集
+ #param videoOn YES： 采集，NO：关闭视频采集
  #return BJLError:
  BJLErrorCode_invalidArguments  错误参数；
  BJLErrorCode_invalidUserRole   错误权限，要求老师或助教权限。

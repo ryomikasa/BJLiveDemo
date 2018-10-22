@@ -12,16 +12,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//static const CGFloat heightM = 75., heightL = 100.0;
-
-static const CGFloat heightM = 55., heightL = 100.0;
+static const CGFloat heightM = 103.0, heightL = 100.0;
 
 NSString
 * const BJLPreviewCellID_view = @"view",
 * const BJLPreviewCellID_view_label = @"view+label",
 * const BJLPreviewCellID_avatar_label = @"avatar+label",
-* const BJLPreviewCellID_avatar_label_buttons = @"avatar+label+buttons";
-
+* const BJLPreviewCellID_avatar_label_buttons = @"avatar+label+buttons",
+* const BJLPreviewCellID_default = @"default";
 @interface BJLPreviewCell ()
 
 @property (nonatomic, nullable) UIView *customView;
@@ -30,6 +28,7 @@ NSString
 @property (nonatomic, readonly, nullable) UIImageView *avatarView;
 @property (nonatomic, readonly, nullable) UIImageView *cameraView;
 @property (nonatomic, readonly, nullable) UIButton *nameView;
+@property (nonatomic, readonly, nullable) UILabel *identity;
 
 @property (nonatomic, readonly, nullable) UIView *actionGroupView;
 @property (nonatomic, readonly, nullable) UILabel *messageLabel;
@@ -45,8 +44,8 @@ NSString
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // self.contentView.backgroundColor = [UIColor bjl_grayImagePlaceholderColor];
-        self.contentView.clipsToBounds = YES;
+        self.backgroundColor = [UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
         
         bjl_weakify(self);
         [self bjl_kvo:BJLMakeProperty(self, reuseIdentifier)
@@ -67,29 +66,26 @@ NSString
 
 - (void)makeSubviews {
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_view]) {
-        self.contentView.backgroundColor = [UIColor whiteColor];
         self->_customCoverView = ({
             UIView *view = [UIView new];
-            [view setTag:111];
             [self.contentView addSubview:view];
             view;
         });
     }
     
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_view_label]) {
-//        2018-10-18 18:38:02 mikasa 视屏view
         self->_customCoverView = ({
             UIView *view = [UIView new];
-            [view setTag:222];
             [self.contentView addSubview:view];
             view;
         });
         
         self->_videoLoadingView = ({
             UIView *view = [UIView new];
-            [view setTag:333];
             view.backgroundColor = [UIColor bjl_colorWithHexString:@"4A4A4A"];
             view.hidden = YES;
+            view.layer.cornerRadius = 3;
+            view.clipsToBounds = YES;
             [self.contentView addSubview:view];
             view;
         });
@@ -97,52 +93,62 @@ NSString
         self->_videoLoadingImageView = ({
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bjl_ic_user_loading"]];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
-            [imageView setTag:444];
             [self.videoLoadingView addSubview:imageView];
             imageView;
         });
     }
     
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label]
-        || [self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label_buttons]) {
+        || [self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label_buttons]||[self.reuseIdentifier isEqualToString:BJLPreviewCellID_default]) {
         self->_avatarView = ({
             UIImageView *imageView = [UIImageView new];
-            [imageView setTag:555];
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.contentMode = UIViewContentModeCenter;
+            imageView.layer.cornerRadius = 3;
+            imageView.clipsToBounds = YES;
+            [imageView setBackgroundColor:[UIColor whiteColor]];
             [self.contentView addSubview:imageView];
             imageView;
+        
         });
     }
     
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label]) {
         self->_cameraView = ({
             UIImageView *imageView = [UIImageView new];
-            [imageView setTag:666];
             imageView.image = [UIImage imageNamed:@"bjl_ic_video_on"];
             [self.contentView addSubview:imageView];
             imageView;
         });
+        self.cameraView.hidden = YES;
     }
     
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_view_label]
-        || [self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label]) {
+        || [self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label]||[self.reuseIdentifier isEqualToString:BJLPreviewCellID_default]) {
         self->_nameView = ({
             UIButton *button = [BJLImageRightButton new];
-            [button setTag:777];
-            button.titleLabel.font = [UIFont systemFontOfSize:13.0];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            // [button setImage:[[UIImage imageNamed:@"bjl_ic_video_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
-            [button setBackgroundImage:[UIImage imageNamed:@"bjl_bg_name"] forState:UIControlStateNormal];
-            button.tintColor = [UIColor whiteColor];
+            button.titleLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:13];
+            [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [self.contentView addSubview:button];
             button;
         });
+        if (![self.reuseIdentifier isEqualToString:BJLPreviewCellID_default]) {
+            self->_identity = ({
+                UILabel *identity = [UILabel new];
+                identity.font = [UIFont fontWithName:@"PingFangSC-Regular" size:11];
+                [identity setTextColor:[UIColor whiteColor]];
+                [self.contentView addSubview:identity];
+                identity.layer.cornerRadius = 5;
+                identity.clipsToBounds = YES;
+                identity.textAlignment = NSTextAlignmentCenter;
+                identity;
+            });
+        }
+    
     }
     
     if ([self.reuseIdentifier isEqualToString:BJLPreviewCellID_avatar_label_buttons]) {
         self->_actionGroupView = ({
             UIView *view = [UIView new];
-            [view setTag:888];
             view.backgroundColor = [UIColor bjl_darkDimColor];
             [self.contentView addSubview:view];
             view;
@@ -150,7 +156,6 @@ NSString
         
         self->_messageLabel = ({
             UILabel *label = [UILabel new];
-            [label setTag:999];
             label.textAlignment = NSTextAlignmentCenter;
             label.font = [UIFont systemFontOfSize:12.0];
             label.textColor = [UIColor whiteColor];
@@ -206,17 +211,19 @@ NSString
 - (void)makeConstraints {
     if (self.customCoverView) {
         [self.customCoverView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.edges.equalTo(self.contentView);
-            make.edges.centerX.equalTo(self.contentView);
-//            make.edges.bottom.equalTo(self.contentView).bottom.inset(30.);
-            make.edges.top.equalTo(self.contentView);
-            make.size.mas_equalTo(CGSizeMake(([UIScreen mainScreen].bounds.size.width - 16*5)/4, ([UIScreen mainScreen].bounds.size.width - 16*5)/4*3/4));
+            make.top.equalTo(self.contentView).offset(5);
+            make.centerX.equalTo(self.contentView.mas_centerX);
+            make.width.equalTo(@(74 * [UIScreen mainScreen].bounds.size.width/375));
+            make.height.equalTo(@(55 * [UIScreen mainScreen].bounds.size.width/375));
         }];
     }
     
     if (self.avatarView) {
         [self.avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.contentView);
+            make.top.equalTo(self.contentView).offset(5);
+            make.centerX.equalTo(self.contentView.mas_centerX);
+            make.width.equalTo(@(74 * [UIScreen mainScreen].bounds.size.width/375));
+            make.height.equalTo(@(55 * [UIScreen mainScreen].bounds.size.width/375));
         }];
     }
     
@@ -228,8 +235,17 @@ NSString
     
     if (self.nameView) {
         [self.nameView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.bottom.equalTo(self.contentView);
+            make.left.right.equalTo(self.contentView);
             make.height.equalTo(@18.0);
+            make.bottom.equalTo(self.contentView).offset(-23);
+        }];
+    }
+    
+    if (self.identity) {
+        [self.identity mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.nameView.mas_centerX);
+            make.top.equalTo(self.nameView.mas_bottom).offset(5);
+            make.width.equalTo(@30);
         }];
     }
     
@@ -254,7 +270,10 @@ NSString
     
     if (self.videoLoadingView) {
         [self.videoLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.contentView);
+            make.top.equalTo(self.contentView).offset(5);
+            make.centerX.equalTo(self.contentView.mas_centerX);
+            make.width.equalTo(@(74 * [UIScreen mainScreen].bounds.size.width/375));
+            make.height.equalTo(@(55 * [UIScreen mainScreen].bounds.size.width/375));
         }];
     }
     
@@ -289,8 +308,14 @@ NSString
     self.customView = view;
     if (view) {
         [self.contentView insertSubview:view atIndex:0];
+        [view setBackgroundColor:[UIColor clearColor]];
+        view.layer.cornerRadius = 3;
+        view.clipsToBounds = YES;
         [view mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.contentView);
+              make.top.equalTo(self.contentView).offset(5);
+            make.centerX.equalTo(self.contentView.mas_centerX);
+            make.width.equalTo(@(74 * [UIScreen mainScreen].bounds.size.width/375));
+            make.height.equalTo(@(55 * [UIScreen mainScreen].bounds.size.width/375));
         }];
     }
 }
@@ -319,61 +344,103 @@ NSString
     }];
 }
 
-- (void)updateWithView:(UIView *)view title:(NSString *)title {
+- (void)updateWithView:(UIView *)view title:(NSString *)title identity:(NSInteger)identity; {
     [self updateWithView:view];
     [self.nameView setTitle:title forState:UIControlStateNormal];
+    if (identity == 1) {
+        self.identity.text = @"老师";
+        [self.identity setBackgroundColor:[UIColor bjl_colorWithHexString:@"#007AFF"]];
+    }else if (identity == 2){
+        self.identity.text = @"助教";
+        [self.identity setBackgroundColor:[UIColor bjl_colorWithHexString:@"#FE754A"]];
+    }
+    else{
+        self.identity.text = @"学生";
+        [self.identity setBackgroundColor:[UIColor bjl_colorWithHexString:@"#FF4858"]];
+    }
+ 
 }
 
-- (void)updateWithImageURLString:(NSString *)imageURLString title:(NSString *)title hasVideo:(BOOL)hasVideo {
-    [self.avatarView bjl_setImageWithURL:[NSURL URLWithString:imageURLString]
-                             placeholder:[UIImage bjl_imageWithColor:[UIColor bjl_grayImagePlaceholderColor]]
-                              completion:nil];
+- (void)updateWithImageURLString:(NSString *)imageURLString title:(NSString *)title hasVideo:(BOOL)hasVideo identity:(NSInteger)identity{
+    if(hasVideo) {
+        [self.avatarView bjl_setImageWithURL:[NSURL URLWithString:imageURLString]
+                                 placeholder:[UIImage bjl_imageWithColor:[UIColor bjl_grayImagePlaceholderColor]]
+                                  completion:nil];
+    }else{
+        if (identity == 5) {
+            [self.avatarView setImage:[UIImage imageNamed:@"noPeople"]];
+            [self addBorderToLayer:self.avatarView];
+        }else{
+           [self.avatarView setImage:[UIImage imageNamed:@"turnOffVideo"]];
+        }
+    }
     if (self.nameView) {
+        if (identity == 5) {
+            [self.nameView setTitleColor:[UIColor bjl_colorWithHexString:@"#808080"] forState:UIControlStateNormal];
+          
+        }else{
+            [self.nameView setTitleColor:[UIColor bjl_colorWithHexString:@"#020202"] forState:UIControlStateNormal];
+        }
         [self.nameView setTitle:title forState:UIControlStateNormal];
         // self.nameView.selected = hasVideo;
         self.cameraView.hidden = !hasVideo;
     }
     else {
+        
         self.messageLabel.text = title;
+    }
+    
+    if (identity == 1) {
+        self.identity.text = @"老师";
+        [self.identity setBackgroundColor:[UIColor bjl_colorWithHexString:@"#007AFF"]];
+    }else if (identity == 2){
+        self.identity.text = @"助教";
+        [self.identity setBackgroundColor:[UIColor bjl_colorWithHexString:@"#FE754A"]];
+    }
+    else{
+        self.identity.text = @"学生";
+        [self.identity setBackgroundColor:[UIColor bjl_colorWithHexString:@"#FF4858"]];
     }
 }
 
 + (CGSize)cellSize {
-//    static BOOL iPad = NO;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
-//    });
-//
-//    CGFloat height = iPad ? heightL : heightM;
-    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 16*5)/4, ([UIScreen mainScreen].bounds.size.width - 16*5)/4*3/4);
-}
-
-//2018-10-17 15:44:12  mikasa 修改视频区域大小
-
-+ (CGSize)previewctrlSelfviewSsize {
-    CGFloat height = heightM+30.+40.;
-    return CGSizeMake([UIScreen mainScreen].bounds.size.width , height);
-}
-//2018-10-17 15:44:12  mikasa 修改视频区域大小
-
-//2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
-+ (CGSize)mikiCellSize{
-//    CGFloat height = heightN;
+    static BOOL iPad = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    });
     
-    return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 16*5)/4, heightM+30);
+    CGFloat height = iPad ? heightL : heightM;
+    return CGSizeMake([UIScreen mainScreen].bounds.size.width/4, height);
 }
-//2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
-
-
 
 + (NSArray<NSString *> *)allCellIdentifiers {
     return @[BJLPreviewCellID_view,
              BJLPreviewCellID_view_label,
              BJLPreviewCellID_avatar_label,
-             BJLPreviewCellID_avatar_label_buttons];
+             BJLPreviewCellID_avatar_label_buttons,
+             BJLPreviewCellID_default,
+             ];
+}
+
+- (void)addBorderToLayer:(UIView *)view{
+    
+    CAShapeLayer *border = [CAShapeLayer layer];
+    //  线条颜色
+    border.strokeColor = [UIColor bjl_colorWithHexString:@"#007AFF"].CGColor;
+    border.fillColor = nil;
+    border.path = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
+    border.frame = view.bounds;
+    border.lineWidth = .5f;
+    border.lineCap = @"round";
+    //  第一个是 线条长度   第二个是间距    nil时为实线
+    border.lineDashPattern = @[@2, @2];
+    [view.layer addSublayer:border];
+    
 }
 
 @end
+
+
 
 NS_ASSUME_NONNULL_END

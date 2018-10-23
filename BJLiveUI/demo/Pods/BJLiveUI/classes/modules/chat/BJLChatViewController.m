@@ -38,7 +38,7 @@ static const NSTimeInterval updateAlphaInterval = 0.2;
 @property (nonatomic, readonly, weak) BJLRoom *room;
 
 // 私聊
-@property (nonatomic) BJLChatStatus chatStatus;
+
 @property (nonatomic, nullable) BJLUser *targetUser;
 
 @property (nonatomic) UIButton *unreadMessagesTipButton;
@@ -502,7 +502,9 @@ static const NSTimeInterval updateAlphaInterval = 0.2;
         statusViewHeight = 36.0;
     }
     else {
-        [self showProgressHUDWithText:@"私聊已取消"];
+//        2018-10-22 13:38:57 mikasa 移除取消私聊弹窗 此处按照安卓
+//        [self showProgressHUDWithText:@"私聊已取消"];
+//        2018-10-22 13:38:57 mikasa 移除取消私聊弹窗 此处按照安卓
     }
     [self.chatStatusView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(statusViewHeight));

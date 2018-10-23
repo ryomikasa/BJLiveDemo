@@ -22,6 +22,7 @@ BJLRoomChildViewController>
 // default: 0.2 ~ 1.0, need call refreshMessages after updating
 @property (nonatomic) CGFloat alphaMin, alphaMax;
 @property (nonatomic, readonly) UIView *chatStatusView;
+@property (nonatomic) BJLChatStatus chatStatus;
 
 @property (nonatomic, copy, nullable) void (^showImageViewCallback)(UIImageView *imageView);
 @property (nonatomic, copy, nullable) void (^changeChatStatusCallback)(BJLChatStatus chatStatus, BJLUser * _Nullable targetUser);

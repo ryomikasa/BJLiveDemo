@@ -87,7 +87,9 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
 @property (nonatomic) MASConstraint *imgProgressViewHeightConstraint;
 @property (nonatomic) UIButton *failedBadgeButton;
 @property (nonatomic) UIView *bgView;
-
+//2018-10-22 17:59:47 mikasa 追加用户身份tag
+@property (nonatomic) UILabel *authTagL;
+//2018-10-22 17:59:47 mikasa 追加用户身份tag
 @property (nonatomic) BJLChatStatus chatStatus;
 @property (nonatomic) CGFloat tableViewWidth;
 @property (nonatomic) NSRange range_activeUserName;
@@ -115,7 +117,7 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
     self.bgView = ({
         UIView *view = [UIView new];
         view.backgroundColor = [UIColor whiteColor];
-        view.layer.cornerRadius = 5;
+        view.layer.cornerRadius = 8.;
         view.layer.masksToBounds = YES;
         [self.contentView addSubview:view];
         view;
@@ -140,6 +142,19 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
         }
         [self.bgView addSubview:textView];
         textView;
+    });
+    
+    self.authTagL = ({
+        UILabel *label = [UILabel new];
+        [label setText:@"老师"];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setFont:[UIFont systemFontOfSize:9.]];
+        [label setTextColor:[UIColor whiteColor]];
+        [label.layer setCornerRadius:7.];
+        [label.layer setMasksToBounds:YES];
+        [label setBackgroundColor:[UIColor bjl_colorWithHexString:@"#FE754A"]];
+        [self.contentView addSubview:label];
+        label;
     });
     
     BOOL isEmoticon = [self.reuseIdentifier isEqualToString:BJLMessageEmoticonIdentifier];
@@ -204,6 +219,16 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
         }
     }];
     
+//2018-10-22 18:06:20 mikasa 追加用户聊天身份标识
+    [self.authTagL mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.bgView).inset(5.);
+        make.top.equalTo(self.bgView).inset(11.);
+        make.size.mas_equalTo(CGSizeMake(26., 14.));
+    }];
+    
+//2018-10-22 18:06:20 mikasa 追加用户聊天身份标识
+    
+    
     if (self.imgView) {
         [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.textView.mas_bottom).offset(BJLViewSpaceS);
@@ -261,6 +286,7 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
     self.bgView.backgroundColor = isHorizontal ? [UIColor bjl_darkDimColor] : [UIColor whiteColor];
     self.bgView.layer.borderWidth = isHorizontal ? 0.0 : BJLOnePixel;
     self.bgView.layer.borderColor = isHorizontal ? nil : [UIColor bjl_grayBorderColor].CGColor;
+    [self.bgView.layer setMasksToBounds:YES];
     
     // 重置点击事件
     [self.textView bjl_removeAllAttributeTapActions];
@@ -272,16 +298,62 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
         NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
         
         // fromUser
-        NSString *fromUserName = fromLoginUser? @"我" : (fromUser.name.length > 0? fromUser.name : @"?");
-        UIColor *fromUserColor = fromLoginUser? [UIColor orangeColor] : ([fromUser canManageUser:toUser]? [UIColor bjl_blueBrandColor] : [UIColor bjl_lightGrayTextColor]);
+//        NSString *fromUserName = fromLoginUser? @"我" : (fromUser.name.length > 0? fromUser.name : @"?");
+        //2018-10-22 17:55:08 mikasa 修改聊天区域文字颜色显示
+//        UIColor *fromUserColor = fromLoginUser? [UIColor orangeColor] : ([fromUser canManageUser:toUser]? [UIColor bjl_blueBrandColor] : [UIColor bjl_lightGrayTextColor]);
+//        UIColor *fromUserColor = fromLoginUser? [UIColor orangeColor] : [UIColor bjl_colorWithHexString:@"#999999"];
+        if ([message isEqualToString:@"mikasa"]) {
+            NSLog(@"2222");
+        }
+        UIColor *fromUserColor;
+        if (fromLoginUser) {
+            fromUserColor = [UIColor orangeColor];
+            if (isWisperMessage) {
+                if ( self.chatStatus != BJLChatStatus_Private) {
+                    self.bgView.layer.borderColor = isHorizontal ? nil : [UIColor bjl_colorWithHexString:@"#FE754A"].CGColor;
+                }else{
+                    self.bgView.layer.borderColor = isHorizontal ? nil : [UIColor whiteColor].CGColor;
+                }
+            }else{
+                self.bgView.layer.borderColor = isHorizontal ? nil : [UIColor bjl_grayBorderColor].CGColor;
+            }
+        }else{
+            if (isWisperMessage) {
+                if ( self.chatStatus != BJLChatStatus_Private) {
+                    self.bgView.layer.borderColor = isHorizontal ? nil : [UIColor bjl_colorWithHexString:@"#FE754A"].CGColor;
+                }else{
+                    self.bgView.layer.borderColor = [UIColor whiteColor].CGColor;
+                }
+                fromUserColor = [UIColor bjl_colorWithHexString:@"#007AFF"];
+            }else{
+                self.bgView.layer.borderColor = isHorizontal ? nil : [UIColor bjl_grayBorderColor].CGColor;
+                fromUserColor = [UIColor bjl_colorWithHexString:@"#999999"];
+            }
+        }
+        //2018-10-22 17:55:08 mikasa 修改聊天区域文字颜色显示
+        NSString *fromUserName;
+        if (fromLoginUser) { //我： || 我对xxx说
+            if (isWisperMessage && self.chatStatus != BJLChatStatus_Private) {//我对xxx说
+                fromUserName = @"我";
+            }else{//我：
+                fromUserName = @"我:";
+            }
+        }else{//xxx： || xxx对我说
+            if (isWisperMessage && self.chatStatus != BJLChatStatus_Private) {//xxx对我说
+                fromUserName = fromUser.name;
+            }else{//xxx:
+                fromUserName = [NSString stringWithFormat:@"%@:",fromUser.name];
+            }
+        }
+        
         NSAttributedString *fromAttrStr = [self createAttributeStringWithText:fromUserName color:fromUserColor];
         [string appendAttributedString:fromAttrStr];
         
         if (isWisperMessage && self.chatStatus != BJLChatStatus_Private) {
             // 私聊字样
-            NSAttributedString *whisperString = [self createAttributeStringWithText:@" 私聊 " color:[UIColor bjl_lightGrayTextColor]];
+            NSAttributedString *whisperString = [self createAttributeStringWithText:@"对" color:[UIColor bjl_lightGrayTextColor]];
             [string appendAttributedString:whisperString];
-            
+
             // toUser
             NSString *toUserName = (fromLoginUser
                                     ? (toUser.name.length > 0? toUser.name : @"?")
@@ -296,6 +368,9 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
                                          ? NSMakeRange(fromAttrStr.length + whisperString.length, toAttrStr.length)
                                          : NSMakeRange(0, fromAttrStr.length));
             tapActionString = fromLoginUser ? toUserName : fromUserName;
+            
+            NSAttributedString *speakString = [self createAttributeStringWithText:@"说:" color:[UIColor bjl_lightGrayTextColor]];
+            [string appendAttributedString:speakString];
         }
         else {
             tapActionString = fromLoginUser? nil : fromUserName;
@@ -310,7 +385,17 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
                                                                                                 ? [UIColor whiteColor]
                                                                                                 : [UIColor blackColor])
                                                           }];
+        
         [string appendAttributedString:textAttrStr];
+        
+//        2018-10-23 11:22:33 mikasa 判断是否需要因为加标签导致需要进行缩进
+        if (([fromUser isTeacher] && self.chatStatus != BJLChatStatus_Private && !isWisperMessage) || ([fromUser isAssistant] && self.chatStatus != BJLChatStatus_Private && !isWisperMessage) ) {
+            NSMutableParagraphStyle *paragraphStyle = [[ NSMutableParagraphStyle alloc ] init ];
+            paragraphStyle. alignment = NSTextAlignmentLeft ;
+            [paragraphStyle setFirstLineHeadIndent : 25.];
+            [string addAttribute : NSParagraphStyleAttributeName value :paragraphStyle range : NSMakeRange ( 0 ,string.length)];
+        }
+//        2018-10-23 11:22:33 mikasa 判断是否需要因为加标签导致需要进行缩进
         string;
     });
     
@@ -323,7 +408,20 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
     self.textView.linkTextAttributes = @{ NSForegroundColorAttributeName: (fromUser.isTeacherOrAssistant || fromUser.isGroupTeacherOrAssistant
                                                                            ? [UIColor bjl_blueBrandColor]
                                                                            : [UIColor bjl_lightGrayTextColor]) };
+//    2018-10-23 10:47:49 mikasa 判断是否需要标签显示隐藏
+    if ( [fromUser isTeacher] && self.chatStatus != BJLChatStatus_Private &&!toUser) {
+        [self.authTagL setBackgroundColor:[UIColor bjl_colorWithHexString:@"#007AFF"]];
+        [self.authTagL setText:@"老师"];
+        [self.authTagL setHidden:NO];
+    }else if ( [fromUser isAssistant] && self.chatStatus != BJLChatStatus_Private && !toUser){
+        [self.authTagL setBackgroundColor:[UIColor bjl_colorWithHexString:@"#FE754A"]];
+        [self.authTagL setText:@"助教"];
+        [self.authTagL setHidden:NO];
+    }else{
+        [self.authTagL setHidden:YES];
+    }
 }
+//    2018-10-23 10:47:49 mikasa 判断是否需要标签显示隐藏
 
 - (NSAttributedString *)createAttributeStringWithText:(NSString *)text color:(UIColor *)color {
     return [[NSMutableAttributedString alloc] initWithString:text
@@ -490,6 +588,8 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
     }
     return self.linkURLCallback(self, URL);
 }
+
+
 
 #pragma mark - <BJLAttributeTapActionDelegate>
 

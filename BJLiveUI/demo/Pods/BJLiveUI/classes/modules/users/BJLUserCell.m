@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
     [IDENTIFIER rangeOfString:[NSString stringWithFormat:FORMAT, VALUE]].location != NSNotFound; \
 })
 
-static const CGFloat avatarSize = 32.0;
+static const CGFloat avatarSize = 25.0;
 
 @interface BJLUserCell ()
 
@@ -41,6 +41,9 @@ static const CGFloat avatarSize = 32.0;
 
 @property (nonatomic, nullable) UIButton *leftButton, *rightButton;
 
+//2018-10-22 13:49:43 miaksa 根据视觉标注添加底部分割线
+@property (nonatomic) UIView *bottomLine;
+//2018-10-22 13:49:43 miaksa 根据视觉标注添加底部分割线
 @end
 
 @implementation BJLUserCell
@@ -68,6 +71,9 @@ static const CGFloat avatarSize = 32.0;
 }
 
 - (void)makeSubviews {
+//  2018-10-22 13:47:13 mikasa 根据视觉稿修改颜色
+//    [self.contentView setBackgroundColor:[UIColor whiteColor]];
+//  2018-10-22 13:47:13 mikasa 根据视觉稿修改颜色
     self.avatarView = ({
         UIImageView *imageView = [UIImageView new];
         imageView.backgroundColor = [UIColor bjl_grayImagePlaceholderColor];
@@ -80,11 +86,20 @@ static const CGFloat avatarSize = 32.0;
     self.nameLabel = ({
         UILabel *label = [UILabel new];
         label.textAlignment = NSTextAlignmentLeft;
-        label.textColor = [UIColor bjl_darkGrayTextColor];
-        label.font = [UIFont systemFontOfSize:15.0];
+        label.textColor = [UIColor bjl_colorWithHexString:@"#4A4A4A"];
+        label.font = [UIFont systemFontOfSize:14.0];
         [self.contentView addSubview:label];
         label;
     });
+    
+//2018-10-22 13:49:43 miaksa 根据视觉标注添加底部分割线
+    self.bottomLine = ({
+        UIView *view = [UIView new];
+        [view setBackgroundColor:[UIColor bjl_colorWithHexString:@"#cccccc"]];
+        [self.contentView addSubview:view];
+        view;
+    });
+//2018-10-22 13:49:43 miaksa 根据视觉标注添加底部分割线
     
     if (self.isTeacher || self.isAssistant) {
         NSString *roleText = self.isTeacher ? @"老师" : @"助教";
@@ -92,11 +107,14 @@ static const CGFloat avatarSize = 32.0;
             UILabel *label = [UILabel new];
             label.text = roleText;
             label.textAlignment = NSTextAlignmentCenter;
-            label.textColor = [UIColor bjl_blueBrandColor];
-            label.font = [UIFont systemFontOfSize:11.0];
-            label.layer.borderWidth = BJLOnePixel;
-            label.layer.borderColor = [UIColor bjl_blueBrandColor].CGColor;
-            label.layer.cornerRadius = BJLButtonCornerRadius;
+//2018-10-22 17:05:38 mikasa 按照标注图修改身份标识
+            [label setBackgroundColor:self.isTeacher?[UIColor bjl_colorWithHexString:@"#007AFF"]:[UIColor bjl_colorWithHexString:@"#FE754A"]];
+            label.textColor = [UIColor whiteColor];
+            label.font = [UIFont systemFontOfSize:9.0];
+//            label.layer.borderWidth = BJLOnePixel;
+//            label.layer.borderColor = [UIColor bjl_blueBrandColor].CGColor;
+            label.layer.cornerRadius = 7.;
+//2018-10-22 17:05:38 mikasa 按照标注图修改身份标识
             label.layer.masksToBounds = YES;
             [self.contentView addSubview:label];
             label;
@@ -177,13 +195,16 @@ static const CGFloat avatarSize = 32.0;
                                                      forAxis:UILayoutConstraintAxisHorizontal];
     
     [self.avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@(avatarSize));
+//        2018-10-22 14:28:14 mikasa 根据标注图 修改私聊列表头像图标大小
+//        make.width.height.equalTo(@(avatarSize));
+        make.width.height.mas_equalTo(avatarSize);
+//        2018-10-22 14:28:14 mikasa 根据标注图 修改私聊列表头像图标大小
         make.left.equalTo(self.contentView).with.offset(BJLViewSpaceL);
         make.centerY.equalTo(self.contentView);
     }];
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.avatarView.mas_right).with.offset(BJLViewSpaceM);
+        make.left.equalTo(self.avatarView.mas_right).with.offset(9.);
         make.centerY.equalTo(self.contentView);
         make.right.lessThanOrEqualTo(self.roleLabel.mas_left
                                      ?: self.presenterLabel.mas_left
@@ -193,17 +214,28 @@ static const CGFloat avatarSize = 32.0;
                                      ?: self.contentView).with.offset(- BJLViewSpaceM);
     }];
     
+//2018-10-22 13:49:43 mikasa 根据视觉标注添加底部分割线
+    [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView).inset(15.);
+        make.bottom.equalTo(self.contentView);
+        make.right.equalTo(self.contentView);
+        make.height.mas_equalTo(.5);
+    }];
+//2018-10-22 13:49:43 mikasa 根据视觉标注添加底部分割线
+    
     [self.roleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.nameLabel.mas_right).with.offset(BJLViewSpaceM);
+//        2018-10-22 17:06:56 mikasa 根据视觉标注修改身份标识位置
+//        make.left.equalTo(self.nameLabel.mas_right).with.offset(BJLViewSpaceM);
+        make.left.equalTo(self.nameLabel.mas_right).with.offset(7.);
         make.centerY.equalTo(self.contentView);
-        make.size.mas_equalTo(CGSizeMake(32.0, 16.0));
+        make.size.mas_equalTo(CGSizeMake(26., 14.0));
         make.right.lessThanOrEqualTo(self.presenterLabel.mas_left
                                      ?: self.videoStateButton.mas_left
                                      ?: self.leftButton.mas_left
                                      ?: self.rightButton.mas_left
                                      ?: self.contentView).with.offset(- BJLViewSpaceM);
     }];
-    
+//        2018-10-22 17:06:56 mikasa 根据视觉标注修改身份标识位置
     [self.presenterLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.roleLabel.mas_right
                           ?: self.nameLabel.mas_right).with.offset(BJLViewSpaceM);

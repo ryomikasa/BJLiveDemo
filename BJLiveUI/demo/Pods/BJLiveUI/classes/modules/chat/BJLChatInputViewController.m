@@ -26,7 +26,7 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
 @property (nonatomic) UIView *contentView;
 
 @property (nonatomic) UITextView *textView;
-@property (nonatomic) UIButton *emoticonButton, *imageButton, *privateChatButton/*, *sendButton*/;
+@property (nonatomic) UIButton *emoticonButton, *imageButton, *privateChatButton, *sendButton;
 @property (nonatomic) UILabel *privateChatLabel;
 @property (nonatomic) UIView *textViewTapMask;
 @property (nonatomic) BJLEmoticonKeyboardView *emoticonKeyboardView;
@@ -186,7 +186,7 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
                 UILabel *label = [UILabel new];
                 label.backgroundColor = [UIColor clearColor];
                 label.textColor = [UIColor bjl_grayTextColor];
-                label.text = @"私聊";
+                label.text = @"所有人";
                 label.textAlignment = NSTextAlignmentCenter;
                 label.adjustsFontSizeToFitWidth = YES;
                 label.font = [UIFont systemFontOfSize:12.0];
@@ -199,8 +199,9 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
             [button addSubview:label];
             [label mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(button);
-                make.left.right.equalTo(button).with.insets(UIEdgeInsetsMake(0.0, 8.0, 0.0, 8.0));
-                make.size.mas_equalTo(CGSizeMake(32.0, 20.0));
+                make.left.right.equalTo(button).with.insets(UIEdgeInsetsMake(0.0, 4.0, 0.0, 4.0));
+                make.size.mas_equalTo(CGSizeMake(45., 24.0));
+                
             }];
             self.privateChatLabel = label;
             
@@ -227,8 +228,8 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
     // 自定义表情／键盘 切换
     self.emoticonButton = ({
         UIButton *button = [UIButton new];
-        [button setImage:[UIImage imageNamed:@"bjl_ic_emotion"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"bjl_ic_emotion"] forState:UIControlStateHighlighted];
+        [button setImage:[UIImage imageNamed:@"bjl_smileemoji"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"bjl_smileemoji"] forState:UIControlStateHighlighted];
         [button setImage:[UIImage imageNamed:@"bjl_ic_keybord"] forState:UIControlStateSelected];
         [button setImage:[UIImage imageNamed:@"bjl_ic_keybord"] forState:UIControlStateSelected | UIControlStateHighlighted];
         button;
@@ -247,14 +248,17 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
         [self.contentView addSubview:self.imageButton];
     }
     
-    /*
+//    2018-10-22 17:20:07 mikasa 添加发送按钮
+    
     self.sendButton = ({
-        UIButton *button = [BJLButton makeRoundedRectButtonHighlighted:YES];
+//        UIButton *button = [BJLButton makeRoundedRectButtonHighlighted:YES];
+        UIButton *button = [[UIButton alloc]init];
+        [button setTitleColor:[UIColor bjl_colorWithHexString:@"#007AFF"] forState:UIControlStateNormal];
         [button setTitle:@"发送" forState:UIControlStateNormal];
         [self.contentView addSubview:button];
         button;
-    }); */
-    
+    });
+//    2018-10-22 17:20:07 mikasa 添加发送按钮
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     self.emoticonKeyboardView = [[BJLEmoticonKeyboardView alloc] initForIdiomPad:iPad];
     if (iPad) {
@@ -273,7 +277,10 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
     }];
     
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.bjl_safeAreaLayoutGuide ?: self.contentView).with.offset(-BJLViewSpaceM);
+//        2018-10-22 17:15:40 mikasa 添加发送按钮
+//        make.right.equalTo(self.contentView.bjl_safeAreaLayoutGuide ?: self.contentView).with.offset(-BJLViewSpaceM);
+        make.right.equalTo(self.contentView.bjl_safeAreaLayoutGuide ?: self.contentView).with.offset(-60.);
+//        2018-10-22 17:15:40 mikasa 添加发送按钮
         make.top.bottom.equalTo(self.contentView).with.insets(UIEdgeInsetsMake(7.0, 0.0, 7.0, 0.0));
         make.height.greaterThanOrEqualTo(@(textViewMinHeight));
         make.height.equalTo(@(textViewMinHeight)).priorityHigh(); // 解决 iOS9 发送图片后 UI 不正常的问题
@@ -314,12 +321,13 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
         make.top.bottom.equalTo(self.textView);
     }];
     
-    /*
+    //    2018-10-22 17:20:07 mikasa 添加发送按钮
     [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.textView.mas_right).with.offset(BJLViewSpaceM);
-        make.right.equalTo(self.contentView.bjl_safeAreaLayoutGuide ?: self.contentView).with.offset(- BJLViewSpaceM);
+        make.left.equalTo(self.textView.mas_right);
+        make.right.equalTo(self.contentView.bjl_safeAreaLayoutGuide ?: self.contentView);
         make.bottom.equalTo(self.textView);
-    }]; */
+    }];
+    //    2018-10-22 17:20:07 mikasa 添加发送按钮
 }
 
 #pragma mark - observers
@@ -405,15 +413,33 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
              return YES;
          }];
     
-    /*
+//    2018-10-22 10:06:48 mikasa 对chatstatus 进行监听以改变 “私聊” ，“所有人”文字显示
+    [self bjl_kvo:BJLMakeProperty(self, self.chatStatus) observer:^BOOL(id  _Nullable old, id  _Nullable now) {
+        for (id subv in self.privateChatButton.subviews) {
+            if ([subv isKindOfClass:[UILabel class]]) {
+                UILabel *titleL = (UILabel *)subv;
+                [titleL setText:(self.chatStatus == BJLChatStatus_Default ? @"所有人" : @"私聊")];
+            }
+        }
+        return YES;
+    }];
+//    2018-10-22 10:06:48 mikasa 对chatstatus 进行监听以改变 “私聊” ，“所有人”文字显示
+    
+//    2018-10-22 17:23:36 mikasa 添加发送按钮
     [self.sendButton bjl_addHandler:^(__kindof UIControl * _Nullable sender) {
         bjl_strongify(self);
-        BOOL sent = [self send:self.textView.text];
-        if (sent) {
-            self.textView.text = nil;
-            [self textViewDidChange:self.textView];
+        if (self.textView.text.length>0) {
+            BOOL sent = [self send:self.textView.text];
+            if (sent) {
+                self.textView.text = nil;
+                [self textViewDidChange:self.textView];
+            }
+        }else{
+            //do nothing
         }
-    } forControlEvents:UIControlEventTouchUpInside]; */
+        
+    } forControlEvents:UIControlEventTouchUpInside];
+//    2018-10-22 17:23:36 mikasa 添加发送按钮
 }
 
 #pragma mark - callbacks
@@ -465,8 +491,12 @@ static const CGFloat textViewMinHeight = 32.0, iconButtonSize = 24.0 + 5 * 2;
     // update content
     self.privateChatLabel.textColor = privateChat? [UIColor bjl_blueBrandColor] : [UIColor bjl_grayTextColor];
     self.privateChatLabel.layer.borderColor = (privateChat? [UIColor bjl_blueBrandColor] : [UIColor bjl_grayTextColor]).CGColor;
-    self.textView.bjl_placeholder = privateChat? [NSString stringWithFormat:@"私聊%@", self.targetUser.name] : @"输入聊天内容";
+    self.textView.bjl_placeholder = privateChat? [NSString stringWithFormat:@"对%@说:", self.targetUser.name] : @"输入聊天内容";
     [self.privateChatUsersView updateChatStatus:chatStatus withTargetUser:targetUser];
+    
+//  2018-10-22 13:33:12 mikasa 根据安卓提示 需求设计如此 d进入聊天入口室 调起键盘 点击切换私聊 所有人时 依旧调起键盘
+    [self clearInputView];
+//  2018-10-22 13:33:12 mikasa 根据安卓提示 需求设计如此 d进入聊天入口室 调起键盘 点击切换私聊 所有人时 依旧调起键盘
 }
 
 #pragma mark - send

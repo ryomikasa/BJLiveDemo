@@ -50,7 +50,7 @@
     [self addSubview:self.chatStatusView];
     [self.chatStatusView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.bjl_safeAreaLayoutGuide ?: self);
-        make.height.equalTo(@(0.0)); // to be updated
+        make.height.equalTo(@(46.0)); // to be updated
     }];
     
     // cancelChatButton
@@ -60,6 +60,9 @@
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button setTitle:@"取消私聊" forState:UIControlStateNormal];
         [button addTarget:self action:@selector(cancelPrivateChat) forControlEvents:UIControlEventTouchUpInside];
+        //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
+        [button setHidden:YES];
+        //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
         button;
     });
     [self.chatStatusView addSubview:cancelChatButton];
@@ -75,6 +78,51 @@
         make.centerY.equalTo(self.chatStatusView);
         make.right.lessThanOrEqualTo(cancelChatButton.mas_left).offset(-margin);
     }];
+    
+    //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
+    UIImageView *allImageV = [[UIImageView alloc]init];
+    [allImageV setContentMode:UIViewContentModeScaleAspectFit];
+    allImageV.layer.cornerRadius = 25./2;
+    [allImageV.layer setMasksToBounds:YES];
+    [allImageV setImage:[UIImage imageNamed:@"bjl_allusers"]];
+    [self.chatStatusView addSubview:allImageV];
+    
+    [allImageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.chatStatusView).inset(15.);
+        make.centerY.equalTo(self.chatStatusView);
+        make.size.mas_equalTo(CGSizeMake(25., 25.));
+    }];
+    
+    UILabel *allpeople = [[UILabel alloc]init];
+    [allpeople setText:@"所有人"];
+    [allpeople setFont:[UIFont systemFontOfSize:15.]];
+    [allpeople setTextAlignment:NSTextAlignmentLeft];
+    
+    [self.chatStatusView addSubview:allpeople];
+    
+    [allpeople mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(allImageV.mas_right).offset(9.);
+        make.centerY.equalTo(self.chatStatusView);
+        make.right.equalTo(self.chatStatusView);
+        make.height.mas_equalTo(46.);
+    }];
+    
+    UIView *bottomLine = [[UIView alloc]init];
+    [bottomLine setBackgroundColor:[UIColor bjl_colorWithHexString:@"#CCCCCC"]];
+    
+    [self.chatStatusView addSubview:bottomLine];
+    
+    [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.chatStatusView).inset(15.);
+        make.bottom.equalTo(self.chatStatusView);
+        make.right.equalTo(self.chatStatusView);
+        make.height.mas_equalTo(.5);
+    }];
+    
+    
+    //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
+    
+    
     
     // tableView
     [self addSubview:self.tableView];
@@ -101,6 +149,19 @@
              [self loadUserListData];
              return YES;
          }];
+    
+//    2018-10-22 14:19:04 mikasa 根据需求 监听私聊状态进行变更‘所有人‘view 背景颜色
+    [self bjl_kvo:BJLMakeProperty(self, chatStatus) observer:^BOOL(id  _Nullable old, id  _Nullable now) {
+        bjl_strongify(self);
+        if (self.chatStatus == BJLChatStatus_Default) {//群聊 所有人
+            [self.chatStatusView setBackgroundColor:[UIColor bjl_colorWithHexString:@"#F3F4F5"]];
+        }else{//私聊状态
+            [self.chatStatusView setBackgroundColor:[UIColor whiteColor]];
+        }
+        return YES;
+    }];
+    
+//    2018-10-22 14:19:04 mikasa 根据需求 监听私聊状态进行变更‘所有人‘view 背景颜色
 }
 
 #pragma mark - load data
@@ -165,6 +226,18 @@
     }
 }
 
+
+/**
+ ‘所有人’点击
+ */
+-(void)allPeopleKiri{
+    if (self.chatStatus == BJLChatStatus_Default) {
+//        do nothing
+    }else{
+        [self cancelPrivateChat];
+    }
+}
+
 - (void)updateChatStatus:(BJLChatStatus)chatStatus withTargetUser:(nullable BJLUser *)targetUser {
     self.chatStatus = chatStatus;
     self.targetUser = (chatStatus == BJLChatStatus_Private)? targetUser : nil;
@@ -173,7 +246,7 @@
     if (chatStatus == BJLChatStatus_Private) {
         // show view
         [self.chatStatusView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@36.0);
+            make.height.equalTo(@46.0);
         }];
         
         // text
@@ -181,8 +254,11 @@
     }
     else {
         // reset
+//        [self.chatStatusView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@0.0);
+//        }];
         [self.chatStatusView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@0.0);
+            make.height.equalTo(@46.0);
         }];
     }
     [self.tableView reloadData];
@@ -204,7 +280,10 @@
                                                           videoPlaying:NO];
     BJLUserCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = ([self.targetUser.ID isEqualToString:user.ID])? [UIColor whiteColor] : [UIColor clearColor];
+//    cell.backgroundColor = ([self.targetUser.ID isEqualToString:user.ID])? [UIColor whiteColor] : [UIColor clearColor];
+//    2018-10-22 14:01:20 mikasa 根据安卓提示 当前私聊的id需要变更颜色显示
+    cell.backgroundColor = ([self.targetUser.ID isEqualToString:user.ID])? [UIColor bjl_colorWithHexString:@"#F3F4F5"] : [UIColor whiteColor];
+//    2018-10-22 14:01:20 mikasa 根据安卓提示 当前私聊的id需要变更颜色显示
     [cell updateWithUser:user];
     return cell;
 }
@@ -244,8 +323,14 @@
     if (!_chatStatusView) {
         _chatStatusView = ({
             UIView *view = [[UIView alloc] init];
-            view.backgroundColor = [UIColor bjl_colorWithHexString:@"#2CA1F8"];
+//            view.backgroundColor = [UIColor bjl_colorWithHexString:@"#2CA1F8"];
+//            [view setBackgroundColor:[UIColor redColor]];
+            [view setBackgroundColor:[UIColor whiteColor]];
             view.clipsToBounds = YES;
+            //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allPeopleKiri)];
+            [view addGestureRecognizer:tap];
+            //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
             view;
         });
     }
@@ -259,6 +344,9 @@
             label.font = [UIFont systemFontOfSize:14.0];
             label.textColor = [UIColor whiteColor];
             label.numberOfLines = 0;
+            //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
+            [label setHidden:YES];
+            //    2018-10-22 11:06:52 mikasa 根据需求设计 此处变更为所有人切换按钮
             label;
         });
     }
@@ -270,7 +358,7 @@
         _tableView = ({
             UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-            tableView.backgroundColor = [UIColor clearColor];
+            tableView.backgroundColor = [UIColor whiteColor];
             tableView.rowHeight = 46.0;
             if (@available(iOS 9.0, *)) {
                 tableView.cellLayoutMarginsFollowReadableWidth = NO;

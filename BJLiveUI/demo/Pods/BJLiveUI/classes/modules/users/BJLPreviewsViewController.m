@@ -711,7 +711,6 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 #pragma mark - <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    NSLog(@"mikasa _BJLPreviewsSection_count ===%ld",_BJLPreviewsSection_count);
     _i= 0;
     return _BJLPreviewsSection_count;
 }

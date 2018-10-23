@@ -621,8 +621,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     self.micButton.hidden = loading || penOnly || !(isTeacherOrAssistant || speakingEnabled);
     self.micButton.selected = self.room.recordingVM.recordingAudio;
-    NSLog(@"mic button if show hidden mikasa %d",(loading || penOnly || !(isTeacherOrAssistant || speakingEnabled)));
-    
     self.cameraButton.hidden = loading || penOnly || !(isTeacherOrAssistant || speakingEnabled);
     self.cameraButton.selected = self.room.recordingVM.recordingVideo;
     

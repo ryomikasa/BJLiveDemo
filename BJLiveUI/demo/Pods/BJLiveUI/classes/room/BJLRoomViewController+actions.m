@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                 tapTimes = 0;
             });
         }
+        NSLog(@"mikasa taptimes %d",tapTimes);
         tapTimes++;
         if (tapTimes == 10) { // NOT >= 10
             [self.room.slideshowViewController tryToReload];

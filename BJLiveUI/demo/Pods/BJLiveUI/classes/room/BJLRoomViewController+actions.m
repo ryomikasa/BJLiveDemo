@@ -103,7 +103,12 @@ NS_ASSUME_NONNULL_BEGIN
                 [self showProgressHUDWithText:@"老师设置了禁止举手"];
                 return;
             }
-            
+//           2018-10-23 14:50:44 mikasa 举手人数限制
+            if (self.room.playingVM.playingUsers.count >2) {
+                [self showProgressHUDWithText:@"当前举手人数超过限制人数"];
+                return;
+            }
+//           2018-10-23 14:50:44 mikasa 举手人数限制
             BJLError *error = [self.room.speakingRequestVM sendSpeakingRequest];
             if (error) {
                 [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];

@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, nullable) BJLAFNetworkReachabilityManager *reachability;
 @property (nonatomic, nullable) BJLProgressHUD *prevHUD;
+@property (nonatomic, strong)UIView *backView ;
 
 @end
 
@@ -53,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     [super viewDidLoad];
     
     self.view.clipsToBounds = YES;
-    self.view.backgroundColor = [UIColor bjl_darkGrayTextColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [self makeViewControllersOnViewDidLoad];
     [self makeActionsOnViewDidLoad];
@@ -100,6 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
         // controls: 切到竖屏不再隐藏、并且再切回横屏依然显示
         [self setControlsHidden:NO animated:NO]; // TODO: 这里开动画会引起进教室时 self.backgroundView 动画异常
     }
+    [_backView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self updateConstraintsForHorizontal:isHorizontal];
     [super updateViewConstraints];
 }
@@ -286,7 +288,7 @@ NS_ASSUME_NONNULL_BEGIN
     /*
     [self bjl_kvo:BJLMakeProperty(self.room, vmsAvailable)
            filter:^BOOL(NSNumber * _Nullable old, NSNumber * _Nullable now) {
-               // bjl_strongify(self);
+                bjl_strongify(self);
                return now.boolValue && !old.boolValue;
            }
          observer:^BOOL(NSNumber * _Nullable old, NSNumber * _Nullable now) {
@@ -619,6 +621,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)makeViewControllersOnViewDidLoad {
     { // in-order add subview/childViewControllers
         [self.view addSubview:self.contentView];
+        self.backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        [self.view addSubview:self.backView];
+        [self.backView setBackgroundColor:[UIColor clearColor]];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeAction)];
+        [self.backView addGestureRecognizer:tap];
+        
+        
         [self.view addSubview:self.backgroundView];
         [self bjl_addChildViewController:self.controlsViewController
                                superview:self.view];
@@ -639,7 +648,11 @@ NS_ASSUME_NONNULL_BEGIN
     // @see - [self updateViewConstraints];
     [self.view setNeedsUpdateConstraints];
 }
-
+//
+-(void)changeAction{
+    if (self.contentView.toggleTopBarCallback) self.contentView.toggleTopBarCallback(nil);
+}
+//增加点击事件 隐藏视图
 @synthesize contentView = _contentView;
 - (BJLContentView *)contentView {
     return _contentView ?: (_contentView = ({

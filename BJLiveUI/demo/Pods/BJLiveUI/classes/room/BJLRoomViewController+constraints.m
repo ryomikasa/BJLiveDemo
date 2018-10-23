@@ -115,12 +115,12 @@ static const CGFloat chatViewWidth = 260.0;
     
     [self.contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
         if (isHorizontal) {
-            make.left.right.bottom.equalTo(self.view).insets(insets);
-            BOOL showPreviewsInline = (isHorizontal && self.previewsViewController.numberOfItems <= 2);
-            make.top.equalTo(showPreviewsInline ? self.view : self.previewsViewController.view.mas_bottom);
+            make.top.left.right.bottom.equalTo(self.view).insets(insets);
+
+          
         }
         else {
-            make.left.right.top.equalTo(self.view).insets(insets);
+            make.left.right.top.equalTo(self.view).insets(UIEdgeInsetsMake(20.0, 44.0, 0.0, 44.0));
             // !!!: .priorityHigh() - fix warnings during ver to hor
             make.height.equalTo(self.contentView.mas_width).multipliedBy(3.0 / 4).priorityHigh();
         }

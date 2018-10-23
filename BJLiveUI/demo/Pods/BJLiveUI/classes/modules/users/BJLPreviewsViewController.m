@@ -102,6 +102,7 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 @property (nonatomic, readwrite) UIView *headerView;
 @property (nonatomic, readwrite) UILabel *movL;
 @property (nonatomic, assign) int i ;
+@property (nonatomic, strong)UICollectionViewFlowLayout *layout ;
 @end
 
 @implementation BJLPreviewsViewController
@@ -159,16 +160,16 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 - (void)makeSubviews {
  
         
-        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        self.layout = [UICollectionViewFlowLayout new];
+        _layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
         //            layout.itemSize = [BJLPreviewCell cellSize];
-        layout.itemSize = [BJLPreviewCell cellSize];
+        _layout.itemSize = [BJLPreviewCell cellSize];
         //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
-        layout.minimumLineSpacing = 0.0;
-        layout.minimumInteritemSpacing = 0.0;
+        _layout.minimumLineSpacing = 0.0;
+        _layout.minimumInteritemSpacing = 0.0;
         
-         self.collectionView  = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+         self.collectionView  = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_layout];
         _collectionView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
         _collectionView.bounces = YES;
         _collectionView.hidden = YES;
@@ -494,7 +495,81 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 //             [self reloadCollectionView];
 //             return YES;
 //         }];
+    
+    
+    //开启和监听 设备旋转的通知（不开启的话，设备方向一直是UIInterfaceOrientationUnknown）
+    if (![UIDevice currentDevice].generatesDeviceOrientationNotifications) {
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    }
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handleDeviceOrientationChange:)
+                                                name:UIDeviceOrientationDidChangeNotification object:nil];
+  
 }
+
+
+//设备方向改变的处理
+- (void)handleDeviceOrientationChange:(NSNotification *)notification{
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    switch (deviceOrientation) {
+        case UIDeviceOrientationFaceUp:
+            NSLog(@"屏幕朝上平躺");
+            break;
+        case UIDeviceOrientationFaceDown:
+            NSLog(@"屏幕朝下平躺");
+            break;
+        case UIDeviceOrientationUnknown:
+            NSLog(@"未知方向");
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            NSLog(@"屏幕向左横置");
+            break;
+        case UIDeviceOrientationLandscapeRight:{
+            NSLog(@"屏幕向右橫置");
+            _headerView.hidden = YES;
+            [_collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.view).offset(5);
+                make.right.equalTo(self.view);
+                make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.height, 55));
+            }];
+            _layout.itemSize =  [BJLPreviewCell cellSize2];
+            [_collectionView setCollectionViewLayout:_layout];
+            [_collectionView setBackgroundColor:[UIColor clearColor]];
+            [_backgroundView setBackgroundColor:[UIColor clearColor]];
+            [_collectionView reloadData];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+            
+        }
+            break;
+        case UIDeviceOrientationPortrait:{
+            NSLog(@"屏幕直立");
+            _headerView.hidden = NO;
+            [_collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.view.mas_top).with.inset(40.);
+                make.left.equalTo(self.view.mas_left);
+                make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 103));
+            }];
+             _collectionView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
+            _layout.itemSize =  [BJLPreviewCell cellSize];
+            [_collectionView setCollectionViewLayout:_layout];
+            [_collectionView reloadData];
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        }
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            NSLog(@"屏幕直立，上下顛倒");
+            break;
+        default:
+            NSLog(@"无法辨识");
+            break;
+    }
+}
+//最后在dealloc中移除通知 和结束设备旋转的通知
+- (void)dealloc{
+    //...
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[UIDevice currentDevice]endGeneratingDeviceOrientationNotifications];
+}
+
 
 - (BOOL)atTheEndOfCollectionView {
     CGFloat contentOffsetX = self.collectionView.contentOffset.x;
@@ -738,9 +813,10 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
                     && !presenterFullScreen) ? 1 : 0;
         }
         case BJLPreviewsSection_recording: {
-            (self.room.recordingVM.recordingVideo
+            // 修改判断 只要有一个有 就显示自己item
+            ((self.room.recordingVM.recordingVideo||self.room.recordingVM.recordingAudio)
              && self.fullScreenItem.type != BJLPreviewsType_recording) ? _i++ : 0;
-            return (self.room.recordingVM.recordingVideo
+            return ((self.room.recordingVM.recordingVideo||self.room.recordingVM.recordingAudio)
                     && self.fullScreenItem.type != BJLPreviewsType_recording) ? 1 : 0;
         }
         case BJLPreviewsSection_videoUsers: {
@@ -882,9 +958,18 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
             }else{
                 identity = 0;
             }
-            // [cell updateWithView:self.room.recordingView];
-            [cell updateWithView:self.room.recordingView
-                           title:@"我" identity:identity];
+            // 增加判断 如果有视频则显示
+            if (self.room.recordingVM.recordingVideo) {
+                [cell updateWithView:self.room.recordingView
+                               title:@"我" identity:identity];
+            }else{
+                //无视频则开放音频
+                [cell updateWithImageURLString:@""
+                                         title:@"我"
+                                      hasVideo:[self.room.playingVM playingUserWithID:self.room.loginUser.ID number:self.room.loginUser.number].audioOn identity:identity];
+                [cell updateLoadingViewHidden:YES];
+            }
+           
             [cell updateLoadingViewHidden:YES];
             break;
         }
@@ -1049,10 +1134,38 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 }
 
 - (void)showMenuForRecordingViewSourceView:(nullable UIView *)sourceView {
+    //增加打开视频的判断
     if (!self.room.recordingVM.recordingVideo) {
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:nil
+                                    message:nil
+                                    preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert bjl_addActionWithTitle:@"打开视频"
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * _Nonnull action) {
+                                  if (self.room.recordingVM.recordingVideo) {
+                                      return;
+                                  }
+                                  BJLError *error = [self.room.recordingVM setRecordingAudio:self.room.recordingVM.recordingAudio
+                                                                              recordingVideo:YES];
+                                  if (error) {
+                                      [self showProgressHUDWithText:error.localizedFailureReason ?: error.localizedDescription];
+                                  }
+                                  else {
+                                      [self showProgressHUDWithText:(self.room.recordingVM.recordingVideo
+                                                                     ? @"摄像头已打开"
+                                                                     : @"摄像头已关闭")];
+                                  }
+                              }];
+        [alert bjl_addActionWithTitle:@"取消"
+                                style:UIAlertActionStyleCancel
+                              handler:nil];
+        
+        [self showAlert:alert sourceView:sourceView];
+        
         return;
     }
-    
+  
 //    UIAlertController *alert = [UIAlertController
 //                                alertControllerWithTitle:@"采集视频"
 //                                message:nil
@@ -1132,6 +1245,26 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
     [alert bjl_addActionWithTitle:@"关闭摄像头"
                             style:UIAlertActionStyleDestructive
                           handler:^(UIAlertAction * _Nonnull action) {
+                              
+         //增加关闭语音和视频同时下麦的判断
+                if (!self.room.recordingVM.recordingAudio && self.room.recordingVM.recordingVideo) {// 音频未开启 &&视频开启 = 关闭视频->同时关闭下麦
+                                  UIAlertController *alert = [UIAlertController
+                                                              alertControllerWithTitle:nil
+                                                              message:@"同时关闭音频、视频将会下麦。确定吗？"
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+                                  [alert bjl_addActionWithTitle:@"确定"
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                            [self.room.speakingRequestVM stopSpeakingRequest];
+                                                        }];
+                                  [alert bjl_addActionWithTitle:@"取消"
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:nil];
+                                  [self presentViewController:alert animated:NO completion:nil];
+                                  return;
+                              }
+                              
+                              
                               if (!self.room.recordingVM.recordingVideo) {
                                   return;
                               }
@@ -1152,6 +1285,10 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
                           handler:nil];
     
     [self showAlert:alert sourceView:sourceView];
+    
+    
+    
+    
 }
 
 - (void)showMenuForPlayingUser:(BJLMediaUser *)playingUser sourceView:(nullable UIView *)sourceView {

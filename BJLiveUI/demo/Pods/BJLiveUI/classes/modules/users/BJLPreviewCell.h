@@ -15,12 +15,12 @@ FOUNDATION_EXPORT NSString
 * const BJLPreviewCellID_view_label, // video teacher, students, recording
 * const BJLPreviewCellID_avatar_label, // audio teacher, students - hasVideo?
 * const BJLPreviewCellID_avatar_label_buttons, // request students
-* const BJLPreviewCellID_default;
+* const BJLPreviewCellID_default;// 暂无 的标识
 @interface BJLPreviewCell : UICollectionViewCell
 
 @property (nonatomic, copy) void (^doubleTapsCallback)(BJLPreviewCell *cell);
 @property (nonatomic, copy) void (^actionCallback)(BJLPreviewCell *cell, BOOL allowed);
-
+@property (nonatomic, readonly, nullable) UIImageView *avatarView;
 - (void)updateWithView:(UIView *)view;
 - (void)updateLoadingViewHidden:(BOOL)hidden;
 - (void)updateWithView:(UIView *)view title:(NSString *)title identity:(NSInteger)identity;
@@ -36,6 +36,7 @@ FOUNDATION_EXPORT NSString
 + (CGSize)mikiCellSize;
 //2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
 
++ (CGSize)cellSize2;
 
 @end
 

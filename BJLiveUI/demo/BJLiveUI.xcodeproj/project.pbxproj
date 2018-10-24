@@ -680,7 +680,7 @@
 				DEVELOPMENT_TEAM = X42MB444YX;
 				INFOPLIST_FILE = BJLiveUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.h252371921.BJLiveUI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.h.BJLiveUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -693,7 +693,7 @@
 				DEVELOPMENT_TEAM = X42MB444YX;
 				INFOPLIST_FILE = BJLiveUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.h252371921.BJLiveUI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.h.BJLiveUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

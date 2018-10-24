@@ -472,6 +472,12 @@ NS_ASSUME_NONNULL_BEGIN
         [self.view addGestureRecognizer:gesture];
         gesture;
     });
+//    2018-10-24 10:13:31 mikasa 追加横屏展开按钮 点击处理 进行隐藏显示聊天记录
+    [self.showB bjl_addHandler:^(__kindof UIControl * _Nullable sender) {
+        [self setChatHidden:NO animated:YES];
+        
+    } forControlEvents:UIControlEventTouchUpInside];
+//    2018-10-24 10:13:31 mikasa 追加横屏展开按钮 点击处理 进行隐藏显示聊天记录
 }
 
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated {
@@ -601,19 +607,23 @@ shouldBeRequiredToFailByGestureRecognizer:(__kindof UIGestureRecognizer *)otherG
     return origin;
 }
 
+
 - (void)bjl_panGestureChanged:(__kindof UIPanGestureRecognizer *)gesture view:(UIView *)view origin:(CGPoint)origin translation:(CGPoint)translation {
     MASViewAttribute *superviewLeft = nil;
     if (view == self.chatViewController.view) {
         superviewLeft = self.controlsViewController.view.mas_left;
+        
     }
     else if (view == self.controlsViewController.view) {
         superviewLeft = self.view.mas_left;
     }
-    [view mas_updateConstraints:^(MASConstraintMaker *make) {
-        CGFloat min = - CGRectGetWidth(view.frame), max = 0.0; // (maxOffset > 0): show message time
-        CGFloat offset = MIN(MAX(min, origin.x + translation.x), max);
-        make.left.equalTo(superviewLeft).offset(offset);
-    }];
+//    2018-10-24 10:14:35 mikasa 禁用底部工具条侧滑
+//    [view mas_updateConstraints:^(MASConstraintMaker *make) {
+//        CGFloat min = - CGRectGetWidth(view.frame), max = 0.0; // (maxOffset > 0): show message time
+//        CGFloat offset = MIN(MAX(min, origin.x + translation.x), max);
+//        make.left.equalTo(superviewLeft).offset(offset);
+//    }];
+//    2018-10-24 10:14:35 mikasa 禁用底部工具条侧滑
 }
 
 - (void)bjl_panGestureEnded:(__kindof UIPanGestureRecognizer *)gesture view:(UIView *)view origin:(CGPoint)origin direction:(UISwipeGestureRecognizerDirection)direction {
@@ -628,9 +638,12 @@ shouldBeRequiredToFailByGestureRecognizer:(__kindof UIGestureRecognizer *)otherG
     
     if (view == self.chatViewController.view) {
         [self setChatHidden:hidden animated:YES];
+        
     }
     else if (view == self.controlsViewController.view) {
-        [self setControlsHidden:hidden animated:YES];
+        //    2018-10-24 10:14:35 mikasa 禁用底部工具条侧滑隐藏
+//        [self setControlsHidden:hidden animated:YES];
+//    2018-10-24 10:14:35 mikasa 禁用底部工具条侧滑隐藏
     }
 }
 

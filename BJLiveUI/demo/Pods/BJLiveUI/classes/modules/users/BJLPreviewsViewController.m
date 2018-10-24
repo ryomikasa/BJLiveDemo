@@ -168,7 +168,8 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
         //            2018-10-17 16:29:35 mikasa 更改collectionview item 大小
         _layout.minimumLineSpacing = 0.0;
         _layout.minimumInteritemSpacing = 0.0;
-        
+    
+    
          self.collectionView  = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_layout];
         _collectionView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
         _collectionView.bounces = YES;
@@ -769,7 +770,8 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
    CGSize size = [BJLPreviewCell cellSize];
   //  CGSize size = [BJLPreviewCell previewctrlSelfviewSsize];
     // size.width = self.numberOfItems > 0 ? size.width *= self.numberOfItems : 0.0;
-    size.height = self.numberOfItems > 0 ? size.height + 40 : 0.0;
+    
+    size.height = self.numberOfItems > 0 ? (isHorizontal? 60:  size.height + 40) : 0.0;
     // make.width.equalTo(@(size.width)).priorityHigh();
     make.height.equalTo(@(size.height));
     

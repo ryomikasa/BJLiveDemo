@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
-            timestampString = "561984363.791515"
+            timestampString = "562046022.34315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "967"
-            endingLineNumber = "967"
+            startingLineNumber = "976"
+            endingLineNumber = "976"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
-            timestampString = "561984363.791636"
+            timestampString = "562046022.343238"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1138"
-            endingLineNumber = "1138"
+            startingLineNumber = "1147"
+            endingLineNumber = "1147"
             landmarkName = "-showMenuForRecordingViewSourceView:"
             landmarkType = "7">
          </BreakpointContent>
@@ -41,44 +41,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.791703"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "614"
-            endingLineNumber = "614"
-            landmarkName = "-bjl_panGestureEnded:view:origin:direction:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.791774"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
-            landmarkName = "-bjl_panGestureCancelled:view:origin:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
-            timestampString = "561984363.791841"
+            timestampString = "562046022.343313"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1295"
-            endingLineNumber = "1295"
+            startingLineNumber = "1304"
+            endingLineNumber = "1304"
             landmarkName = "-showMenuForPlayingUser:sourceView:"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,28 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
-            timestampString = "561984363.791903"
+            timestampString = "562046022.343385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1110"
-            endingLineNumber = "1110"
+            startingLineNumber = "1119"
+            endingLineNumber = "1119"
             landmarkName = "-showMenuForPPTViewSourceView:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController.m"
-            timestampString = "561989796.1428241"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "469"
-            endingLineNumber = "469"
-            landmarkName = "-showProgressHUDWithText:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,7 +106,7 @@
                   moduleName = "BJLiveUI"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/room/BJLRoomViewController+observing.m"
-                  timestampString = "561989796.540293"
+                  timestampString = "562046022.689428"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "118"
@@ -169,7 +121,7 @@
                   moduleName = "BJLiveUI"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/room/BJLRoomViewController+observing.m"
-                  timestampString = "561989796.541775"
+                  timestampString = "562046022.690937"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "119"
@@ -184,7 +136,7 @@
                   moduleName = "BJLiveUI"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/room/BJLRoomViewController+observing.m"
-                  timestampString = "561989796.543601"
+                  timestampString = "562046022.692448"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "118"
@@ -265,11 +217,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
-            timestampString = "561984363.792913"
+            timestampString = "562046022.343521"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1004"
-            endingLineNumber = "1004"
+            startingLineNumber = "1013"
+            endingLineNumber = "1013"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -281,11 +233,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController.m"
-            timestampString = "561989796.143026"
+            timestampString = "562046022.343596"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
+            startingLineNumber = "376"
+            endingLineNumber = "376"
             landmarkName = "-showOverlayViewController"
             landmarkType = "7">
          </BreakpointContent>
@@ -296,72 +248,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.793299"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "574"
-            endingLineNumber = "574"
-            landmarkName = "-bjl_panGestureBegan:view:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.793366"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "599"
-            endingLineNumber = "599"
-            landmarkName = "-bjl_panGestureChanged:view:origin:translation:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__59-[BJLRoomViewController(actions) bjl_panGestureBegan:view:]_block_invoke"
-                  moduleName = "BJLiveUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-                  timestampString = "561989796.572538"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "599"
-                  endingLineNumber = "599"
-                  offsetFromSymbolStart = "296">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_.544"
-                  moduleName = "BJLiveUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-                  timestampString = "561989796.574102"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "597"
-                  endingLineNumber = "597"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.143124"
+            timestampString = "561993236.311323"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
@@ -409,11 +297,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController.m"
-            timestampString = "561989796.143575"
+            timestampString = "562046022.343696"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "788"
-            endingLineNumber = "788"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
             landmarkName = "-pptQuickSlideViewController"
             landmarkType = "7">
          </BreakpointContent>
@@ -440,40 +328,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/utilities/extentions/UIPanGestureRecognizer+BJLViewPanning.m"
-            timestampString = "561977258.1465451"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "-bjl_addHandlerWithDelegate:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
-            timestampString = "561984363.793927"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "681"
-            endingLineNumber = "681"
-            landmarkName = "-enterFullScreenWithViewForVideoPlayingUser:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/ppt/BJLPPTQuickSlideViewController.m"
-            timestampString = "561989796.14369"
+            timestampString = "561993236.311763"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
@@ -489,7 +345,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/ppt/BJLPPTQuickSlideViewController.m"
-            timestampString = "561989796.1437351"
+            timestampString = "561993236.311811"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "103"
@@ -505,23 +361,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.794084"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "-makeActionsOnViewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.794137"
+            timestampString = "562046022.343791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
@@ -536,24 +376,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
-            timestampString = "561984363.7941869"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "-makeActionsOnViewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.1438251"
+            timestampString = "561993236.311916"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "471"
@@ -569,23 +393,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/BJLiveUI/classes/modules/chat/BJLChatViewController.m"
-            timestampString = "561989796.144123"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "693"
-            endingLineNumber = "693"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLChatViewController.m"
-            timestampString = "561989796.144177"
+            timestampString = "561993236.3119659"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "771"
@@ -600,13 +408,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLChatViewController.m"
-            timestampString = "561989796.144224"
+            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
+            timestampString = "562046022.34386"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "698"
-            endingLineNumber = "698"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "629"
+            endingLineNumber = "629"
+            landmarkName = "-bjl_panGestureEnded:view:origin:direction:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -616,13 +424,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.144272"
+            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
+            timestampString = "562046022.343906"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
-            landmarkName = "-updateWithMessage:placeholder:fromLoginUser:chatStatus:tableViewWidth:isHorizontal:"
+            startingLineNumber = "614"
+            endingLineNumber = "614"
+            landmarkName = "-bjl_panGestureChanged:view:origin:translation:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -632,13 +440,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.144521"
+            filePath = "Pods/BJLiveUI/classes/room/BJLRoomViewController+actions.m"
+            timestampString = "562046022.34395"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "298"
-            endingLineNumber = "298"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
+            startingLineNumber = "605"
+            endingLineNumber = "605"
+            landmarkName = "-bjl_panGestureBegan:view:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -648,140 +456,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.1447639"
+            filePath = "Pods/BJLiveUI/classes/modules/users/BJLPreviewsViewController.m"
+            timestampString = "562046051.716405"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.1450011"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "431"
-            endingLineNumber = "431"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.145239"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[BJLMessageCell _updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:]"
-                  moduleName = "BJLiveUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-                  timestampString = "561989796.65082"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "420"
-                  endingLineNumber = "420"
-                  offsetFromSymbolStart = "7656">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__86-[BJLMessageCell _updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:]_block_invoke_2"
-                  moduleName = "BJLiveUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-                  timestampString = "561989796.65291"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "420"
-                  endingLineNumber = "420"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.329"
-                  moduleName = "BJLiveUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ios_dev/Desktop/haochanghuiDemo/BJLiveUI/demo/Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-                  timestampString = "561989796.654707"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "420"
-                  endingLineNumber = "420"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.145474"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "320"
-            endingLineNumber = "320"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.1456881"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "412"
-            endingLineNumber = "412"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pods/BJLiveUI/classes/modules/chat/BJLMessageCell.m"
-            timestampString = "561989796.145949"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "-_updateLabelsWithMessage:fromUser:toUser:fromLoginUser:isHorizontal:"
+            startingLineNumber = "778"
+            endingLineNumber = "778"
+            landmarkName = "-makeContentSize:forHorizontal:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

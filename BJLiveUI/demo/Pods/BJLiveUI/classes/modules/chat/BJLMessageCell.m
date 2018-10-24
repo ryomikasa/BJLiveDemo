@@ -428,7 +428,7 @@ static const CGFloat imageMessageCellMinHeight = imageMinHeight + verMargins;
                 else {
                     make.bottom.equalTo(self.imgView.mas_top).with.offset(- BJLViewSpaceS);
                 }
-                NSLog(@"%@",self.authTagL);
+                
                 if (self.authTagL.hidden ==  YES) {
                     make.left.equalTo(self.bgView).offset(3);
                     //                authTagL

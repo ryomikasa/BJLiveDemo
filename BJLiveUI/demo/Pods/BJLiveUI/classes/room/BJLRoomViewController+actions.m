@@ -171,11 +171,19 @@ NS_ASSUME_NONNULL_BEGIN
     [self.controlsViewController setRotateCallback:^(id _Nullable sender) {
         bjl_strongify(self);
         BOOL isHorizontal = BJLIsHorizontalUI(self);
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+       
         if (isHorizontal) {
+            [dic setValue:@"0" forKey:@"roatate"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"roatate" object:nil userInfo:dic];
             [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+           
         }
         else {
+            [dic setValue:@"1" forKey:@"roatate"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"roatate" object:nil userInfo:dic];
             [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+      
         }
     }];
     [self.controlsViewController setMicCallback:^(id _Nullable sender) {

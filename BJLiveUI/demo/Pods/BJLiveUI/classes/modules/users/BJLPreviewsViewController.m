@@ -496,16 +496,46 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
 //             return YES;
 //         }];
     
-    
+//
     //开启和监听 设备旋转的通知（不开启的话，设备方向一直是UIInterfaceOrientationUnknown）
-    if (![UIDevice currentDevice].generatesDeviceOrientationNotifications) {
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    }
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handleDeviceOrientationChange:)
-                                                name:UIDeviceOrientationDidChangeNotification object:nil];
-  
+//    if (![UIDevice currentDevice].generatesDeviceOrientationNotifications) {
+//        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    }
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handleDeviceOrientationChange:)
+//                                                name:UIDeviceOrientationDidChangeNotification object:nil];
+
+//
 }
 
+-(void)changeToHorizontal:(BOOL)flag{
+    if (flag) {
+        _headerView.hidden = YES;
+        [_collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(5);
+            make.right.equalTo(self.view);
+            make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 55));
+        }];
+       
+        [_collectionView setBackgroundColor:[UIColor clearColor]];
+        [_backgroundView setBackgroundColor:[UIColor clearColor]];
+        _layout.itemSize =  [BJLPreviewCell cellSize2];
+        [_collectionView setCollectionViewLayout:_layout];
+        [_collectionView reloadData];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }else{
+        _headerView.hidden = NO;
+        [_collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).with.inset(40.);
+            make.left.equalTo(self.view.mas_left);
+            make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 103));
+        }];
+        _collectionView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
+        _layout.itemSize =  [BJLPreviewCell cellSize3];
+        [_collectionView setCollectionViewLayout:_layout];
+        [_collectionView reloadData];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    }
+}
 
 //设备方向改变的处理
 - (void)handleDeviceOrientationChange:(NSNotification *)notification{
@@ -525,34 +555,13 @@ static const CGSize moreButtonSize = { .width = 85.0, .height = BJLButtonSizeS }
             break;
         case UIDeviceOrientationLandscapeRight:{
             NSLog(@"屏幕向右橫置");
-            _headerView.hidden = YES;
-            [_collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view).offset(5);
-                make.right.equalTo(self.view);
-                make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.height, 55));
-            }];
-            _layout.itemSize =  [BJLPreviewCell cellSize2];
-            [_collectionView setCollectionViewLayout:_layout];
-            [_collectionView setBackgroundColor:[UIColor clearColor]];
-            [_backgroundView setBackgroundColor:[UIColor clearColor]];
-            [_collectionView reloadData];
-            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+          
             
         }
             break;
         case UIDeviceOrientationPortrait:{
             NSLog(@"屏幕直立");
-            _headerView.hidden = NO;
-            [_collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view.mas_top).with.inset(40.);
-                make.left.equalTo(self.view.mas_left);
-                make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width, 103));
-            }];
-             _collectionView.backgroundColor = [UIColor bjl_colorWithHexString:@"#F2F2F2"];
-            _layout.itemSize =  [BJLPreviewCell cellSize];
-            [_collectionView setCollectionViewLayout:_layout];
-            [_collectionView reloadData];
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
+          
         }
             break;
         case UIDeviceOrientationPortraitUpsideDown:

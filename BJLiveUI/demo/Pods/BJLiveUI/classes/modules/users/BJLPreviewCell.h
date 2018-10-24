@@ -37,7 +37,7 @@ FOUNDATION_EXPORT NSString
 //2018-10-17 16:16:28 mikasa 视频区域cell view 新size 调整
 
 + (CGSize)cellSize2;
-
++ (CGSize)cellSize3;
 @end
 
 NS_ASSUME_NONNULL_END

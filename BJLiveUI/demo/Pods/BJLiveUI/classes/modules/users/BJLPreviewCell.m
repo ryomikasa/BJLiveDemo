@@ -471,17 +471,27 @@ NSString
     return CGSizeMake([UIScreen mainScreen].bounds.size.width/4, height);
 }
 
-+ (CGSize)cellSize2 {
++(CGSize)cellSize2 {
     static BOOL iPad = NO;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
     });
 
-    return CGSizeMake([UIScreen mainScreen].bounds.size.height/4, 60);
+    return CGSizeMake([UIScreen mainScreen].bounds.size.width/4, 60);
     
 }
 
++ (CGSize)cellSize3 {
+    static BOOL iPad = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    });
+    
+    CGFloat height = iPad ? heightL : heightM;
+    return CGSizeMake([UIScreen mainScreen].bounds.size.height/4, height);
+}
 
 + (NSArray<NSString *> *)allCellIdentifiers {
     return @[BJLPreviewCellID_view,

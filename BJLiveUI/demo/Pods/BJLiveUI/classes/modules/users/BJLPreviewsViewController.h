@@ -34,7 +34,7 @@ BJLRoomChildViewController>
 - (void)showMenuForFullScreenItemSourceView:(nullable UIView *)sourceView;
 - (BJLObservable)fullScreenDidStartLoadingVideo;
 - (BJLObservable)fullScreenDidFinishLoadingVideo;
-
+-(void)changeToHorizontal:(BOOL)flag;
 @end
 
 #pragma mark -

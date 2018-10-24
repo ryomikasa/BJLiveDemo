@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable) BJLAFNetworkReachabilityManager *reachability;
 @property (nonatomic, nullable) BJLProgressHUD *prevHUD;
 @property (nonatomic, strong)UIView *backView ;
+@property (nonatomic, assign)BOOL flag; // 是否可以旋转
+@property (nonatomic, assign)BOOL isHorizontal;
 
 @end
 
@@ -46,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self->_room = room;
+        _flag = NO;
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(roatate:) name:@"roatate" object:nil];
     }
     return self;
 }
@@ -94,6 +98,21 @@ NS_ASSUME_NONNULL_BEGIN
                                                   object:nil];
 }
 
+
+-(void)roatate:(NSNotification *)noti{
+  
+    _flag = YES;
+    
+    if ([[noti.userInfo objectForKey:@"roatate"]isEqualToString:@"0"]) {
+        _isHorizontal = NO;
+       
+    }else{
+         _isHorizontal = YES;
+
+    }
+    
+  
+}
 // NOTE: trigger by [self.view setNeedsUpdateConstraints];
 - (void)updateViewConstraints {
     BOOL isHorizontal = BJLIsHorizontalUI(self);
@@ -156,11 +175,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - UIViewControllerRotation
 
-- (BOOL)shouldAutorotate {
-    return YES;
+- (BOOL)shouldAutorotate{
+    return _flag;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+   
     return (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone
             ? UIInterfaceOrientationMaskAllButUpsideDown
             : UIInterfaceOrientationMaskAll);
@@ -169,9 +189,17 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - <UIContentContainer>
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [super viewWillTransitionToSize:size
+          withTransitionCoordinator:coordinator];
+    if (self.isHorizontal) {
+        [self.previewsViewController changeToHorizontal:YES];
+    }else{
+        [self.previewsViewController changeToHorizontal:NO];
+    }
+    _flag = NO;
     NSLog(@"%@ viewWillTransitionToSize: %@",
           NSStringFromClass([self class]), NSStringFromCGSize(size));
+  
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -187,6 +215,8 @@ NS_ASSUME_NONNULL_BEGIN
         [self.view setNeedsUpdateConstraints];
     } completion:nil];
 }
+
+
 
 #pragma mark - events
 

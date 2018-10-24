@@ -146,6 +146,13 @@ static const CGFloat chatViewWidth = 260.0;
             make.left.right.bottom.equalTo(self.view).insets(insets);
         }
     }];
+//    2018-10-24 10:15:42 mikasa 大范围点击隐藏底部工具条时 展开按钮是否隐藏判定联动
+    if (self.controlsHidden == YES) {
+        [self.showB setHidden:YES];
+    }else{
+        [self.showB setHidden:!self.chatHidden];
+    }
+//    2018-10-24 10:15:42 mikasa 大范围点击隐藏底部工具条时 展开按钮是否隐藏判定联动
 }
 
 - (void)updateChatConstraintsForHorizontal:(BOOL)isHorizontal {
@@ -173,6 +180,9 @@ static const CGFloat chatViewWidth = 260.0;
     }];
     
     self.chatViewController.view.hidden = isHorizontal && self.room.slideshowViewController.drawingEnabled;
+//    2018-10-24 10:16:27 mikasa 展开按钮是否显示隐藏判定
+    [self.showB setHidden:!self.chatHidden];
+//    2018-10-24 10:16:27 mikasa 展开按钮是否显示隐藏判定
 }
 
 - (UIEdgeInsets)safeAreaInsetsForHorizontal:(BOOL)isHorizontal {

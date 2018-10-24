@@ -31,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface BJLRoomViewController : UIViewController <UIGestureRecognizerDelegate>
 
+//    2018-10-24 10:16:27 mikasa 聊天记录旁边展开按钮
+@property (nonatomic, strong)UIButton *showB;
+//    2018-10-24 10:16:27 mikasa 聊天记录旁边展开按钮
+
 /** 直播教室
  参考 `BJLiveCore` */
 @property (nonatomic, readonly, nullable) BJLRoom *room; // TODO: DEPRECATED_MSG_ATTRIBUTE("will be removed in the future")

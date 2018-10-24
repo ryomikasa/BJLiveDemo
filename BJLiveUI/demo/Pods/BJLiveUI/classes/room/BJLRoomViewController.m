@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)BOOL flag; // 是否可以旋转
 @property (nonatomic, assign)BOOL isHorizontal;
 
+
 @end
 
 @implementation BJLRoomViewController {
@@ -668,10 +669,25 @@ NS_ASSUME_NONNULL_BEGIN
         [self.view addSubview:self.recordingStateView];
         
         [self.view addSubview:self.topBarView];
+        
+        //    2018-10-24 10:16:27 mikasa 聊天记录旁边展开按钮
+        self.showB = [[UIButton alloc] init];
+        [self.showB setContentMode:UIViewContentModeScaleAspectFit];
+        [self.showB setHidden:YES];
+        [self.showB setBackgroundImage:[UIImage imageNamed:@"bjl_ic_chatshow"] forState:UIControlStateNormal];
+        [self.backView addSubview:self.showB];
+        [self.showB mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.backView).with.inset(0.);
+            make.centerY.equalTo(self.backView);
+            make.size.mas_equalTo(CGSizeMake(22, 44));
+        }];
+        //    2018-10-24 10:16:27 mikasa 聊天记录旁边展开按钮
+        
         [self bjl_addChildViewController:self.overlayViewController];
         
         // at last
         [self bjl_addChildViewController:self.loadingViewController];
+        
     }
     
     [UIViewController attemptRotationToDeviceOrientation];
